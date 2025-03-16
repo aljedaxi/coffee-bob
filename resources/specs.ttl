@@ -1,0 +1,96 @@
+@base <https://dasein-online.ca/coffee-bob/taxonomy/> .
+@prefix bob: <https://dasein-online.ca/coffee-bob/taxonomy/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<Feature> a skos:Concept .
+
+<Experience> a skos:ConceptScheme .
+
+<Coffeehouse> a skos:Concept .
+<Review> a skos:Concept .
+<Impression> a skos:Concept .
+
+
+<Coffee> a <Feature> ;
+  skos:definition "coffee is good. drink coffee"@en ;
+  skos:editorialNote "idk i'll come up with something later"@en ;
+  skos:topConceptOf <Experience> ;
+  skos:narrower <Turkish>, <Espresso>, <ShortDrink>, <LongBlacks>, <Flights>, <PourOvers> .
+
+<Turkish> a <Feature> ;
+  skos:definition "alternatively known as arabic coffee. spread throughout the middle east by the ottoman empire, it's served with the grounds in the cup, like cupping coffee. for historical reasons, these days, it tends to be served with spices."@en .
+
+<Espresso> a <Feature> ;
+  skos:definition "the ontic ground of all short drinks, long blacks &c."@en .
+
+<ShortDrink> a <Feature> ;
+  skos:prefLabel "short drinks"@en ;
+  skos:example "your cortados, macchiatos, cappuccinos, &c."@en ;
+  rdfs:comment "with the exception of milk texture, i tend to think of these as all essentially the same, and choose whatever works best with the espresso."@en ;
+  skos:definition "a double of espresso with less milk than a latte"@en .
+
+<LongBlacks> a <Feature> ;
+  skos:prefLabel "long blacks"@en ;
+  skos:example "americanos, long blacks, short blacks"@en ;
+  skos:definition "hot watered down espresso"@en .
+
+<Flights> a <Feature> ;
+  skos:definition "sometimes you want to try a lot of things...."@en .
+
+<PourOvers> a <Feature> ;
+  skos:prefLabel "pour overs &c."@en ;
+  skos:definition "if you could serve it at brewer's cup, it's in"@en .
+
+<Space> a <Feature> ;
+  skos:definition "the parts of being that americans call 'common sense', 'objective'"@en ;
+  skos:topConceptOf <Experience> ;
+  skos:narrower <Power>, <Seating>, <Architecture> .
+
+<Architecture> a <Feature> ;
+  skos:example "the way the door arches, the way cafe integrates with the rest of the building"@en ;
+  skos:definition "that which cannot be seen, but must speak through the seen"@en .
+
+<Seating> a <Feature> ;
+  skos:definition "will you find a seat? when? will it be comfy?"@en .
+
+<Power> a <Feature> ;
+  skos:definition "do they have a lot of outlets? may you use your laptop?"@en .
+
+<Price> a <Feature> ;
+  skos:example "3 bucks for an americano is cheap."@en ;
+  skos:definition "is this cheap? is this everyday bro? or is this a real excursion? a splurge? not normalized for quality; pure function of the market. please note that this is against other specialty shops, not tim hortons."@en .
+
+<Food> a <Feature> ;
+  skos:definition "edible solids, and perhaps soups."@en ;
+  skos:topConceptOf <Experience> ;
+  skos:narrower <BakedGoods> .
+
+<Vibes> a <Feature> ;
+  skos:definition "branding; the feelings of the space, what the space engenders;"@en ;
+  skos:topConceptOf <Experience> ;
+  skos:narrower <View>, <Appolonianism>, <Comfy>, <Cool>.
+
+<Cool> a <Feature> ;
+  skos:definition "cool neither matters nor exists anymore. i'm just old and bitter"@en .
+
+<View> a <Feature> ;
+  skos:definition "What's the view out the window?"@en .
+
+<Appolonianism> a <Feature> ;
+  skos:definition "supreme focus on clarity of flavour on the nose and palate"@en .
+
+<Comfy> a <Feature> ;
+  skos:definition "can you really sink in here? focus on soft, worn materials; warm colours; open spaces"@en .
+
+<OtherBevvies> a <Feature> ;
+  skos:prefLabel "drinks"@en ;
+  skos:definition "drinks that aren't coffee"@en ;
+  skos:topConceptOf <Experience> ;
+  skos:narrower <HotChocolate>, <MiscDrinks> .
+
+<HotChocolate> a <Feature> ;
+  skos:definition "when the chocolate hot tho?"@en .
+
+<MiscDrinks> a <Feature> ;
+  skos:definition "usually stuff that's specific to this place"@en .
