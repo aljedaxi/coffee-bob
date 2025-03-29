@@ -25,10 +25,21 @@
 
 (def top-concepts
   (d/q
-   '[:find ?c-uri
+   '[:find ?c-uri ?a ?attr
      :where
      [?e :rdf/type :skos/ConceptScheme]
      [?e :uri ?cs-uri]
      [?c-id :skos/topConceptOf ?cs-uri]
-     [?c-id :uri ?c-uri]]
+     [?c-id :uri ?c-uri]
+     [?c-id ?a]
+     [?c-id ?a ?attr]]
    @conn))
+
+(def concept-maps
+  (->> top-concepts
+       (group-by first)
+       (mapcat (fn [[id vals]]
+              [id (apply hash-map (mapcat rest vals))]))
+       (apply hash-map)))
+
+(print concept-maps)

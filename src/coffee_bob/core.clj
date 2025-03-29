@@ -11,6 +11,7 @@
             [hiccup.page :refer [html5]]
             [coffee-bob.cafes :refer [layout cafes bobbery cafe silly-details]]
             [coffee-bob.util :refer [depn]]
+            [coffee-bob.rdf :refer [top-concepts]]
             [coffee-bob.html-utils :as h]))
 
 (defn get-assets []
@@ -56,15 +57,22 @@
         headstuff (list
                    silly-details
                    [:style ".ratings { & li {display: contents;} display: grid; grid-template-columns: repeat(5, 1fr 0.5fr); padding: 0; }"]
-                   [:script {:type "module" :async true :src "/public/spider.js"}])]
+                   [:script {:type "module" :async true :src "/public/spider.js"}])
+        index
+        (layout
+         {:headstuff headstuff}
+         [:main head-group [:spider-graph {:aspects "rdfa"}]
+          [:nav [:ul (map cafe-list-item cafes)]]])
+        taxonomy
+        (layout
+         {}
+         [:main
+          [:hgroup [:h1 "the calgary coffee vocabulary"]
+           [:p "ways of talking about coffee"]]])]
+    (p/pprint top-concepts)
     (merge
-     {"/" (html5
-           (layout
-            {:headstuff headstuff}
-            [:main
-             head-group
-             [:spider-graph {:aspects "rdfa"}]
-             [:nav [:ul (map cafe-list-item cafes)]]]))}
+     {"/" (html5 index)
+      "/taxonomy/" (html5 taxonomy)}
      cafe-map)))
 
 (def app (-> (stasis/serve-pages pages {:stasis/ignore-nil-pages? true})
