@@ -68,6 +68,9 @@
 
 <Vibes> a <Feature> ;
   skos:definition "branding; the feelings of the space, what the space engenders;"@en ;
+  skos:scopeNote """this should be understood in its fullest, most diffuse sense. the vibes are the feel, the experience."""@en ;
+  skos:example "what you figure they're trying to accomplish"@en;
+  skos:example "the way the lampshades make you feel"@en;
   skos:topConceptOf <Experience> ;
   skos:narrower <View>, <Appolonianism>, <Comfy>, <Cool>.
 
