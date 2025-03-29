@@ -138,6 +138,25 @@
    (aspect
     "vibes" 3 "immaculate"
     (sub-aspect "comfy" 3 "fireplace. most of the seats are cushy. most of the colours are warm; most of the materials are warm, worn, exposed, rough. the staff is friendly and inviting."))])
+
+(def semantics
+  [{:id "semantics"
+    :name "Semantics Cafe"
+    :summary "too early to say, but i'm interested in what's to come"}
+   [:p "semantics was dreaming;"]
+   (aspect
+    "coffee" 2 "solid! on par with the alfornos of the world"
+    [:p "pleasant almond notes. mild roastiness. mild acidity. very par, very middle of the road."]
+    (sub-aspect "espresso" 2 "nothing special")
+    (sub-aspect "short-drinks" 2 "smooth, inoffensive."))
+   (aspect
+    "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."
+    (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
+    (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door"))
+   (aspect
+    "vibes" 3 "this " [:em "must"] " be understood in the fullest, most diffuse sense."
+    [:p "semantics "])])
+
 (def cafes [european-bakery velet])
 
 
