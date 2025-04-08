@@ -2,7 +2,7 @@
   (:require [coffee-bob.util :refer [depn]]
             [coffee-bob.html-utils :as h]))
 
-(def bob-prefix "/taxonomy/")
+(def bob-prefix "/taxonomy#")
 (defn bobbery [s] (format "%s%s" bob-prefix s))
 
 (def bottom-links
@@ -13,8 +13,8 @@
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]
    [:span "v0.1.0"]])
 
-(defn layout [{:keys [headstuff id]} & children]
-  [:html {:lang "en-CA" :id id}
+(defn layout [{:keys [prefix headstuff id]} & children]
+  [:html {:lang "en-CA" :id id :prefix prefix}
    [:head
     headstuff
     (h/stylesheet "https://unpkg.com/normalize.css@8.0.1/normalize.css")

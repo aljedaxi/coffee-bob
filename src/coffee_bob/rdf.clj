@@ -1,9 +1,9 @@
 (ns coffee-bob.rdf
   (:import [crg.turtle.parser Literal])
   (:require [datascript.core :as d]
+            [clojure.string :as s]
             [clojure.java.io :refer [input-stream]]
-            [crg.turtle.parser :as ttl]
-            [datascript.db :as db]))
+            [crg.turtle.parser :as ttl]))
 
 (def schema {:uri {:db/index true}
              :aka {:db/cardinality :db.cardinality/many}})
@@ -35,11 +35,20 @@
      [?c-id ?a ?attr]]
    @conn))
 
-(def concept-maps
-  (->> top-concepts
+(defn mapen-datoms [x]
+  (->> x
        (group-by first)
-       (mapcat (fn [[id vals]]
-              [id (apply hash-map (mapcat rest vals))]))
+       (mapcat (fn [[id vals]] [id (apply hash-map (mapcat rest vals))]))
        (apply hash-map)))
 
-(print concept-maps)
+(defn map-map [f o]
+  (->> o (mapcat f) (apply hash-map)))
+
+(defn map-vals [f o]
+  (map-map (fn [[k v]] [k (f v)]) o))
+(defn map-keys [f o]
+  (map-map (fn [[k v]] [(f k) v]) o))
+(defn de-namespace [o]
+  (map-keys #(-> % str (s/replace #":\w+/" "") (s/replace #"^:" "") keyword) o))
+
+(def top-features (->> top-concepts mapen-datoms (map-vals de-namespace)))
