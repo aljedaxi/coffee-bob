@@ -27,16 +27,29 @@
 (defn skos [property & children]
   [:p {:property (format "skos:%s" property)} children])
 
+(defn nar [props & children]
+  (let [f (fn [%]
+            [:p "children: "
+             [:a {:rel "skos:narrower" :href (bobbery (name %))}
+              %]])]
+    (cond
+      (keyword? children) (f children)
+      (sequential? children) (map f children)
+      :else nil)))
+
+
 (defn top-feature
-  [{:keys [prefLabel definition editorialNote scopeNote example id]}
+  [{:keys [prefLabel definition editorialNote scopeNote example id topConceptOf narrower]}
    & children]
   [:section {:id id :about (format "[bob%s]" id) :typeof "[bob:Feature]"}
-   ; TODO narrower, top concept of
-   [:h2 {:property "skos:prefLabel"} (or prefLabel id)]
+   [:div {:style "display: grid; grid-template-columns: 1fr 0.5fr; align-items: baseline"}
+    [:h2 {:property "skos:prefLabel" :style "display: inline"} (or prefLabel id)]
+    (if topConceptOf [:span {:property "skos:topConceptOf"} topConceptOf] nil)]
    (skos "definition" definition)
    (if editorialNote (skos "editorialNote" editorialNote) nil)
    (if example [:p "eg. " [:span {:property "skos:example"} example]] nil)
    (if scopeNote (skos "scopeNote" scopeNote) nil)
+   (nar {} narrower)
    children])
 
 (def taxonomy
