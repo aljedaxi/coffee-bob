@@ -17,12 +17,10 @@
   [:html {:lang "en-CA" :id id :prefix prefix}
    [:head
     headstuff
-    (h/stylesheet "https://unpkg.com/normalize.css@8.0.1/normalize.css")
-    (h/stylesheet "https://unpkg.com/concrete.css@2.1.1/concrete.css")
+    (h/stylesheet "/public/main.css")
     [:meta {:charset "utf-8"}]
     [:link {:rel "icon" :href "/public/favicon.ico" :sizes "any"}]
-    [:script {:src "/public/mittens.js"}]
-    [:style "header {padding: 8rem 0}"]]
+    [:script {:src "/public/mittens.js"}]]
    [:body {:vocab "https://schema.org/" :typeof "WebPage"}
      children
      [:footer (interpose " ❧ " bottom-links)]]])

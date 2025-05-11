@@ -15,7 +15,7 @@
             [coffee-bob.html-utils :as h]))
 
 (defn get-assets []
-  (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif)"])
+  (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif|css)"])
        (map #(assoc % :path (format "/public%s" (:path %))))))
 
 (def meta first)
