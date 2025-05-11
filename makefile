@@ -1,2 +1,2 @@
 serve:
-	lein ring server-headless
+	nix shell nixpkgs#leiningen --command lein ring server-headless
