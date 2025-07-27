@@ -9,10 +9,11 @@
             [optimus.optimizations :as optimizations]
             [optimus.strategies :refer [serve-live-assets]]
             [hiccup.page :refer [html5]]
-            [coffee-bob.cafes :refer [layout cafes bobbery cafe silly-details]]
+            [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe silly-details]]
             [coffee-bob.util :refer [depn]]
             [coffee-bob.rdf :refer [top-features]]
             [coffee-bob.html-utils :as h]))
+
 
 (defn get-assets []
   (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif|css)"])
@@ -64,7 +65,7 @@
      top-features)]))
 
 (defn pages []
-  (defn cafe-list-item [[props & rest :as cafe]]
+  (defn cafe-list-item [[props & rest]]
     (let [{:keys [id name summary color]} props
           ratings (filter #(and (= (first %) :section)
                                 (= (typeof %) "Rating")) rest)
@@ -78,7 +79,7 @@
                       (fn [[_ {:keys [id]} [_tagname _heading [_tag & rest]]]]
                         (let [rating-val (get-rating-val rest)]
                          [:li {:property "reviewRating" :typeof "Rating"}
-                          [:a {:property "reviewAspect" :href (bobbery id)} id]
+                          [:a {:property "reviewAspect" :href (class-link id)} id]
                           [:span {:property "ratingValue"} rating-val]]))
                       ratings)]
       [:details {:typeof "CriticReview"}
@@ -88,16 +89,18 @@
          [:a {:style "color: inherit" :href (cafe-url id)} name]]
         [:p {:property "abstract"} summary]]
        [:ul.ratings rating-lis]]))
+
   (let [cafe-map-list (mapcat
                        #(vector (-> % cafe-id cafe-url)
                                 (->> % (apply cafe) html5))
                        cafes)
         cafe-map (apply hash-map cafe-map-list)
         head-group [:hgroup
-                    [:h1 "the calgary " [:a {:href (bobbery "coffee")} "coffee bob"]]
+                    [:h1 "the calgary " [:a {:href (class-link "coffee")} "coffee bob"]]
                     [:p "a celebration of any aspect of anywhere that serves coffee"]]
         headstuff (list
                    silly-details
+                   (h/stylesheet "/public/index.css")
                    [:style ".ratings { & li {display: contents;} display: grid; grid-template-columns: repeat(5, 1fr 0.5fr); padding: 0; }"]
                    [:script {:type "module" :async true :src "/public/spider.js"}])
         index
