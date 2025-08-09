@@ -132,7 +132,6 @@ class SpiderGraph extends HTMLElement {
 			const prop = this.property (section)
 			const {href, innerHTML: aspect} = prop ("reviewAspect")
 			const {innerHTML: value} = prop ("ratingValue")
-			console.log({section, value, val: prop('ratingValue')})
 			yield new Rating(
 				aspect,
 				value,
@@ -157,7 +156,6 @@ class SpiderGraph extends HTMLElement {
 			const ratings = reviews.flatMap(r => r.ratings).filter((r, idx, xs) =>
 				!xs.slice(idx + 1).some(r2 => r.aspect === r2.aspect)
 			)
-			console.log(ratings, radars)
 			return {featureList: ratings, radars}
 		}
 		// TODO this is broken. strip this when you're done with the main page
