@@ -1,12 +1,10 @@
 (ns coffee-bob.cafes
-  (:require [coffee-bob.util :refer [depn]]
-            [clojure.string :refer [capitalize]]
+  (:require [clojure.string :refer [capitalize]]
             [coffee-bob.html-utils :as h]))
-
 
 (def bob-prefix "/taxonomy#")
 (defn bobbery [s] (format "%s%s" bob-prefix s))
-(defn class-link [s] (format "%s%s" bob-prefix (capitalize s)))
+(defn class-link [s] (format "%s%s" bob-prefix s))
 
 (def bottom-links
   [[:a {:href "about"} "about"]
@@ -66,29 +64,27 @@
    "/"
    [:sub {:property "bestRating"} [:a {:href "about/methodology/#nps"} "3"]]])
 
-(defn section-header [level nps title]
+(defn section-header [level nps id & children]
   [:div.spread
-   [level [:a {:href (class-link title) :property "reviewAspect"} title]]
+   [level [:a {:href (class-link id) :property "reviewAspect"} children]]
    (rating nps)])
-
-(defn heading [level & children] [(symbol (format "h%d" level)) children])
 
 (defn aspect-body [summary children]
   (when (not= 0 (count children))
     [:details [:summary {:property "ratingExplanation"} summary]
      [:div.dented children]]))
 
-(defn reviewRating [level nps title & children]
+(defn reviewRating [level nps title id & children]
   [:section {:id title
-             :resource (format "#%s" title)
+             :resource (format "#%s" id)
              :property "reviewRating"
              :typeof "Rating"}
-   (section-header level nps title)
+   (section-header level nps id title)
    children])
 
 ; TODO lookup prefLabel for title if exists
 (defn sub-aspect [title nps sum & children]
-  (reviewRating :h3 nps title (aspect-body sum children)))
+  (reviewRating :h3 nps title title (aspect-body sum children)))
 
 ; TODO try running nix run github:aljedaxi/rdfa2ttl "http://localhost:3000/euro/" to test
 ; TODO everything is currently fucked. consult
@@ -97,7 +93,10 @@
 ; * https://www.w3.org/TR/rdfa-lite
 ; * https://www.w3.org/TR/rdfa-primer/
 (defn aspect [title nps sum & children]
-  (reviewRating :h2 nps title (aspect-body sum children)))
+  (reviewRating :h2 nps title (capitalize title) (aspect-body sum children)))
+
+(defn other-bevvies [nps sum & children]
+  (reviewRating :h2 nps "drinks" "OtherBevvies" (aspect-body sum children)))
 
 (def european-bakery
   [{:id "european-bakery"
@@ -217,7 +216,7 @@
             "good medium-dark roast, so it did open my mind in that regard."]
            (sub-aspect "baked-goods" 3 ""))
    (aspect "vibes" 3 "" (sub-aspect "apollonian-aestheticism" 3 ""))
-   (aspect "other-bevvies" 3 "While the emphasis is on coffee and tea, they have a few fascinating items at the back of the menu"
+   (other-bevvies 3 "While the emphasis is on coffee and tea, they have a few fascinating items at the back of the menu"
            (sub-aspect "tea" 3 "")
            (sub-aspect "hot-chocolate" 3 "")
            (sub-aspect "misc" 3 "")
