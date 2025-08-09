@@ -1,6 +1,7 @@
 (ns coffee-bob.core
   (:require [ring.middleware.content-type :refer [wrap-content-type]]
             [clojure.pprint :as p]
+            [clojure.data.json :as json]
             [stasis.core :as stasis]
             [optimus.prime :as optimus]
             [optimus.assets :as assets]
@@ -98,9 +99,12 @@
         head-group [:hgroup
                     [:h1 "the calgary " [:a {:href (class-link "coffee")} "coffee bob"]]
                     [:p "a celebration of any aspect of anywhere that serves coffee"]]
+        speculationRules {:prefetch [{:where {:href_matches "/*"}}]
+                          :eagerness "moderate"}
         headstuff (list
                    silly-details
                    (h/stylesheet "/public/index.css")
+                   [:script {:type "speculationrules"} (json/write-str speculationRules)]
                    [:style ".ratings { & li {display: contents;} display: grid; grid-template-columns: repeat(5, 1fr 0.5fr); padding: 0; }"]
                    [:script {:type "module" :async true :src "/public/spider.js"}])
         index
