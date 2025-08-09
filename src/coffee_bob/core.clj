@@ -78,10 +78,11 @@
                                     last
                                     first))
           rating-lis (map
-                      (fn [[_ {:keys [id]} [_tagname _heading [_tag & rest]]]]
+                      (fn [[_ {:keys [id resource]} [_tagname _heading [_tag & rest]]]]
                         (let [rating-val (get-rating-val rest)]
                          [:li {:property "reviewRating" :typeof "Rating"}
-                          [:a {:property "reviewAspect" :href (class-link id)} id]
+                          [:a {:property "reviewAspect"
+                               :href (format "/taxonomy%s" resource)} id]
                           [:span {:property "ratingValue"} rating-val]]))
                       ratings)]
       [:details {:typeof "CriticReview"}
@@ -98,7 +99,7 @@
                        cafes)
         cafe-map (apply hash-map cafe-map-list)
         head-group [:hgroup
-                    [:h1 "the calgary " [:a {:href (class-link "coffee")} "coffee bob"]]
+                    [:h1 "the calgary " [:a {:href (class-link "Coffee")} "coffee bob"]]
                     [:p "a celebration of any aspect of anywhere that serves coffee"]]
         speculationRules {:prefetch [{:where {:href_matches "/*"}}]
                           :eagerness "moderate"}
