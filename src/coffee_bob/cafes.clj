@@ -24,7 +24,7 @@
     [:script {:src "/public/mittens.js"}]]
    [:body {:vocab "https://schema.org/" :typeof "WebPage"}
      children
-     [:footer (interpose " ❧ " bottom-links)]]])
+    [:footer (interpose " ❧ " bottom-links)]]])
 
 (defn coord [x y] (format "https://www.openstreetmap.org/#map=20/%f/%f" x y))
 (defn location [x y] [:a {:href (coord x y)} "location"])

@@ -2,6 +2,7 @@
   (:require [ring.middleware.content-type :refer [wrap-content-type]]
             [clojure.pprint :as p]
             [clojure.data.json :as json]
+            [markdown-to-hiccup.core :as m]
             [stasis.core :as stasis]
             [optimus.prime :as optimus]
             [optimus.assets :as assets]
@@ -114,6 +115,18 @@
           [:nav [:ul (map cafe-list-item cafes)]]])]
     (merge
      {"/" (html5 index)
+      "/about/" (html5
+                 (layout
+                  {}
+                  [:main
+                  (m/file->hiccup "./resources/static/about.md")
+                   ]))
+      "/about-me/" (html5
+                 (layout
+                  {}
+                  [:main
+                  (m/file->hiccup "./resources/static/about-me.md")
+                   ]))
       "/taxonomy/" (html5 taxonomy)}
      cafe-map)))
 
