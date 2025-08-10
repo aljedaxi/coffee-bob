@@ -15,7 +15,7 @@ this site has two primary goals:
 - i want to represent cafe reviews in a way that's quickly parsable: stackable, sortable, filterable. i want somebody who's new to the city to quickly find their perfect cafe.
 - i want to pay back all the places that've given me great coffee, to give them the financial security they need to push to greater heights.
 
-## journalistic integrity
+<h2 id="im-going-gonzo">journalistic integrity</h2>
 
 i make no claims to objectivity. this is [me](../about-me), my experiences, and my biases, something closer to gonzo journalism. i'm friends with more than a few baristas: i know the depths of their passion, the tales of their struggle. i can't pretend that that doesn't change anything.
 

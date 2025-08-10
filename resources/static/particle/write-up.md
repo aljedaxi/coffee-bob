@@ -1,0 +1,7 @@
+Particle is the brainchild of [Alex Cao](https://www.instagram.com/alex.yingjian/), sole barista of Particle and lead barista at [A-OK Cafe](https://www.instagram.com/a.okcafe/) in chinook mall. (full disclosure: i'm Alex's biggest fan. i may have a couple [biases](/about/#im-going-gonzo)) fortunately, he does get help some days, but for the most part, you'll be seeing him behind the bar.
+
+good for us; Alex is an exceptional barista with a clear, piercing vision for what he wants his cafe and coffee to be. in a local, regional, and continental scene moving towards more experimental, funky coffees, Alex stocks 95% washed coffees, and 5% restrained naturals. the selection changes monthly, so it's imprudent to speak in concretes, but everything's been expectional so far (—and an exceptional price, considering what he's bringing in.)
+
+on the other hand, we have seasonals. they also lean on clean, elegant profiles: matcha with a coconut water base; oat milk [dirty](https://europeancoffeetrip.com/dirty-coffee-recipe-milbok/) with a [gardenia](https://en.wikipedia.org/wiki/Gardenia) syrup; [shakerato](https://www.youtube.com/watch?v=XYUuot8lJAY) with a little yuzu syrup. those're my favorites, but there're always a few approachable options for your coffee curious starbucks drinkers.
+
+Particle's a pop-up, so come next year, it may move. it's currently in [house 831](https://house831.com/), which you may remember as _Sociality House_. nota bene: _Particle is only open on weekends_.

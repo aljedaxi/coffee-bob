@@ -1,14 +1,17 @@
 (ns coffee-bob.cafes
-  (:require [clojure.string :refer [capitalize]]
+  (:require [clojure.string :refer [upper-case]]
+            [markdown-to-hiccup.core :as m]
             [coffee-bob.html-utils :as h]))
+
+(defn capitalize [s] (str (upper-case (subs s 0 1)) (subs s 1)))
 
 (def bob-prefix "/taxonomy#")
 (defn bobbery [s] (format "%s%s" bob-prefix s))
-(defn class-link [s] (format "%s%s" bob-prefix s))
+(defn class-link [s] (format "%s%s" bob-prefix (capitalize s)))
 
 (def bottom-links
-  [[:a {:href "about"} "about"]
-   [:a {:href "about-me"} "about me"]
+  [[:a {:href "/about"} "about"]
+   [:a {:href "/about-me"} "about me"]
    [:a {:href "/coffee-bob"} "home"]
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]
@@ -28,8 +31,10 @@
 
 (defn coord [x y] (format "https://www.openstreetmap.org/#map=20/%f/%f" x y))
 (defn location [x y] [:a {:href (coord x y)} "location"])
+(defn insta [s]
+  [:a {:href (format "https://www.instagram.com/%s" s)} "insta"])
 (defn cutout [& children]
-  (list [:hr] [:div.centered children] [:hr]))
+  (list [:hr] [:div.cutout children] [:hr]))
 
 (def silly-details
   [:style " details[open] > summary {list-style-type: \"❦ \";} details > summary {list-style-type: \"❧ \";}"])
@@ -42,7 +47,7 @@
      [:title name]
      [:style "svg > text {fill: var(--fg);}"]
      [:script {:type "module" :async true :src "/public/spider.js"}]
-     [:style ".centered {display: grid; place-items: center}"]
+     [:style ".cutout {display: flex; justify-content: center; gap: 6px;}"]
      silly-details
      [:style "section {display: contents;}"]
      [:style ".spread {display: flex; justify-content: space-between; align-items: baseline; padding-block: 1rem; & h2, h3 {margin: 0;}}"]
@@ -97,6 +102,10 @@
 
 (defn other-bevvies [nps sum & children]
   (reviewRating :h2 nps "drinks" "OtherBevvies" (aspect-body sum children)))
+(defn pour-over [nps sum & children]
+  (reviewRating :h3 nps "pour overs" "PourOver" (aspect-body sum children)))
+(defn short-drink [nps sum & children]
+  (reviewRating :h3 nps "short drinks" "ShortDrink" (aspect-body sum children)))
 
 (def european-bakery
   [{:id "european-bakery"
@@ -154,12 +163,10 @@
     (sub-aspect "espresso" 2 "nothing special")
     (sub-aspect "short-drinks" 2 "smooth, inoffensive."))
    (aspect
-    "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."
-    (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
-    (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door"))
-   (aspect
     "vibes" 3 "this " [:em "must"] " be understood in the fullest, most diffuse sense."
-    [:p "semantics "])])
+    (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
+    (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door")
+    (sub-aspect "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."))])
 
 (def aubade [:a {:href "https://www.vancouvercoffeesnob.com/chinatown/aubade-coffee-2/"} "aubade"])
 (def glitch [:a {:href "https://tokyocoffee.org/2016/04/15/glitch-coffee-roasters/"} "glitch"])
@@ -276,27 +283,25 @@
            (sub-aspect "seating" 3 "bountiful"))
    (aspect "staff" 2 "cool enough people")])
 
-(def cafes [european-bakery velet monogram t2722 mobSquad q-lab analog-bankers-hall semantics])
+(defn particle []
+  (defn md [s]
+    (->> s
+         (format "./resources/static/particle/%s.md")
+         m/file->hiccup
+         list))
+  [{:id "particle" :name "Particle Coffee" :color "#72b622"
+    :summary "clean washed coffees and fantastic seasonals"}
+   (md "write-up")
+   (cutout (location 51.03766708785928 -114.08121351161644)
+           (insta "particlecoffee"))
+   (aspect "coffee" 3 "clean, complex, complete"
+           (pour-over 3 "big on the nose; round in the mouth; elegant on the palate" (md "coffee/pourOver"))
+           (short-drink 3 "my man makes a mean cortado" [:p "you can't go to Particle without getting an oat milk one and one. if you're feeling saucy, consider the 1&amp;1&amp;1: a spro, a cortado, and a dirty or a shakerato."]))
+   (other-bevvies 3 "some really neat stuff" (md "OtherBevvies"))
+   (aspect "vibes" 2 "tech worker" (md "vibes/index"))
+   (aspect "food" 2 "above average, but nothing groundbreaking" [:p "sourced from the lovely " [:a {:href "https://www.kanyoucake.com/"} "Kan U Cake"]])
+   (aspect "staff" 3 "Alex is really good at his job")
+   (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")
+   ])
 
-
-; (
-;  (:cafe
-;  (:chain
-;  (:cafe
-;  {:id "particle"}
-;  (:name "Particle Coffee")
-;  (:links (:insta "https://www.instagram.com/particlecoffee/"))
-;  (:summary "gorgeous, elegant washed coffees")
-;  (:write-up
-;   "Particle coffee is all about washed coffees: elegant, complex, restrained. the menu revolves around pour overs, usually of coffee roasted by [Tim Wendelboe](https://timwendelboe.no/)."]
-;   [:p "project of [Alex Cao](https://www.instagram.com/alex.yingjian/), lead barista at Aritzia's [A-OK Cafe](https://www.instagram.com/a.okcafe/) in [Chinook Mall](https://shops.cadillacfairview.com/property/cf-chinook-centre)")
-;  (:impression
-;   {:timestamp "2024-07-20"}
-;   (:coffee
-;    {:class "3"}
-;    (:summary "exceptional washed coffees")
-;    (:write-up
-;     "this is absolutely the place in the city if you like that elegant, nordic flavour profile. everything i've served has ranged from top-notch to life-changing.")
-;    (:flights
-;     {:class "3"}
-;     "the two things i get here are pour over flights and \"one and one\"s: an espresso shot, split into one cup black and the other with milk. both are always exceptional")))                ))
+(def cafes [european-bakery velet monogram t2722 mobSquad q-lab analog-bankers-hall semantics (particle)])
