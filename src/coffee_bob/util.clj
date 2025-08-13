@@ -1,15 +1,12 @@
 (ns coffee-bob.util
   (:require [clojure.string :as s]))
 
-
 (defmacro depn [func-name threading-macro & args]
   `(defn ~func-name [arg#] (~threading-macro arg# ~@args)))
-
 
 (depn feature-url ->> (format "criterion/%s/"))
 (depn cafe-url ->> (format "coffeehouse/%s/"))
 (depn first-val some-> first (get :content) first s/trim)
-
 
 (defn parse-cafe [{{:keys [id]} :attrs content :content}]
   (defn fuck [{:keys [tag content attrs]}]
@@ -37,7 +34,6 @@
      :summary (first-val summary)
      :color (first-val color)
      :features features}))
-
 
 (defn parse-cafes [{:keys [content] :as root}]
   (let [{:keys [cafe]} (group-by :tag content)]

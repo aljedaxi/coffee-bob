@@ -17,10 +17,10 @@
             ; https://github.com/tonsky/datascript/blob/fa222f7b1b05d4382414022ede011c88f3bad462/src/datascript/core.cljc#L283
             [found] (d/datoms @conn :avet :uri subj)
             [id] (if found found
-                 (->> [[:db/add -1 :uri subj]]
-                      (d/transact! conn)
-                      :tx-data
-                      first))]
+                     (->> [[:db/add -1 :uri subj]]
+                          (d/transact! conn)
+                          :tx-data
+                          first))]
         (d/transact! conn [[:db/add id pred obj]])))))
 
 (def top-concepts

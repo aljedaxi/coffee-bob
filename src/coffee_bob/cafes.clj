@@ -26,7 +26,7 @@
     [:link {:rel "icon" :href "/public/favicon.ico" :sizes "any"}]
     [:script {:src "/public/mittens.js"}]]
    [:body {:vocab "https://schema.org/" :typeof "WebPage"}
-     children
+    children
     [:footer (interpose " ❧ " bottom-links)]]])
 
 (defn coord [x y] (format "https://www.openstreetmap.org/#map=20/%f/%f" x y))
@@ -113,21 +113,21 @@
     :name "European Bakery"
     :color "#e83326"
     :summary "a bakery that serves surprisingly good turkish coffee"}
-  [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
+   [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
    [:p "all in all, this is a hidden gem, and the reason i made this website."]
-  (cutout (location 51.03766612184806 -114.07219196898996))
-  (aspect "coffee" 2 "they only serve turkish coffee. it's good."
+   (cutout (location 51.03766612184806 -114.07219196898996))
+   (aspect "coffee" 2 "they only serve turkish coffee. it's good."
            (sub-aspect "price" 3 nil)
            (sub-aspect "turkish" 2 nil)
            (sub-aspect "variety" 1 nil))
-  (aspect "price" 3 "monumental value."
+   (aspect "price" 3 "monumental value."
            (sub-aspect "baked-goods" 3 nil)
            (sub-aspect "variety" 3 nil))
-  (aspect "food" 2 "all manner of (mostly eastern) european baked goods and imports"
+   (aspect "food" 2 "all manner of (mostly eastern) european baked goods and imports"
            [:p "the baked goods run the gamut from flat breads, northern european loaves, baguettes, and pretzels, to savory stuffed goods like "
             [:a {:href "https://www.thespruceeats.com/traditional-yugoslavian-rolled-burek-borek-recipe-1805900"} "bureks"]
             ". on the right side of the store are imports from all around Europe. everything is excellent and very reasonably priced."])
-  (aspect "vibes" 2 "it's a bakery with a little grocery store")])
+   (aspect "vibes" 2 "it's a bakery with a little grocery store")])
 
 (def velet
   [{:id "velet"
@@ -172,16 +172,16 @@
 (def glitch [:a {:href "https://tokyocoffee.org/2016/04/15/glitch-coffee-roasters/"} "glitch"])
 
 (def monogram
- [{:id "monogram" :name "Monogram" :color "#997600" :summary "what was the crown jewel of the calgary scene" :recc "short-drinks"}
-  [:p "i don't have—a lot of—insider knowledge. but i pay close attention to some things when i go to cafes, especially when i go to the same cafe almost every day. Monogram was that for me. even " aubade " ran Monogram as their espresso."]
-  [:p "but things have been shifting. many things that i need to write a general \"scene think piece\" on that don't fit in this article, but also smaller things. the cortados went from being routinely excellent, to sometimes excellent, to always good. staff churn has been increasing. the seasonal drinks have all kinda sucked recently (including the hot chocolate fest hot chocolates)."]
-  [:p "Monogram is still better than like, Deville or Analog or Phil and Sebastian, but the margin gets slimmer every year. It's all a bit depressing to think about."]
-  (cutout (location 51.049096124603615, -114.06718542186842))
-  (aspect "coffee" 2 "Monogram is a no-mans-land between your 2s and your 3s"
-    [:p "you should think of Monogram as quitessential third wave, calgary's revolver."]
-    (sub-aspect "short-drinks" 2 "very dependably good")
-    (sub-aspect "pour-overs" 2 "chill. pretty standard.")
-    (sub-aspect "variety" 3 "they run the standard gamut of coffee drinks, with little seasonal additions"))])
+  [{:id "monogram" :name "Monogram" :color "#997600" :summary "what was the crown jewel of the calgary scene" :recc "short-drinks"}
+   [:p "i don't have—a lot of—insider knowledge. but i pay close attention to some things when i go to cafes, especially when i go to the same cafe almost every day. Monogram was that for me. even " aubade " ran Monogram as their espresso."]
+   [:p "but things have been shifting. many things that i need to write a general \"scene think piece\" on that don't fit in this article, but also smaller things. the cortados went from being routinely excellent, to sometimes excellent, to always good. staff churn has been increasing. the seasonal drinks have all kinda sucked recently (including the hot chocolate fest hot chocolates)."]
+   [:p "Monogram is still better than like, Deville or Analog or Phil and Sebastian, but the margin gets slimmer every year. It's all a bit depressing to think about."]
+   (cutout (location 51.049096124603615, -114.06718542186842))
+   (aspect "coffee" 2 "Monogram is a no-mans-land between your 2s and your 3s"
+           [:p "you should think of Monogram as quitessential third wave, calgary's revolver."]
+           (sub-aspect "short-drinks" 2 "very dependably good")
+           (sub-aspect "pour-overs" 2 "chill. pretty standard.")
+           (sub-aspect "variety" 3 "they run the standard gamut of coffee drinks, with little seasonal additions"))])
 
 (def t2722
   [{:id "t2722" :name "T2722" :color "#1077f3"
@@ -190,7 +190,7 @@
    [:p "genuinely world class. consider yourself fortunate we have access to this"]
    [:p "we might think of T2722 as having three prongs: coffee, tea, and pastry. this is paralleled in the staff, 3 experts: Elle, Julian, and the mysterious french baker who i haven't spoken with. these three work 12 hour shifts, every day. the depths of their passion is a mystery even to me."]
    [:p "the core idea is pairing these prongs. for each baked good, there's a matching tea or coffee drink. from each pairing emerges—at times—a truly sublime experience. i mean this very specifically and technically. it's like walking through a hallway that opens onto a cliff face, stumbling and flailing as you try not to fall "
-    [:a {:href "https://www.youtube.com/watch?v=Zya8jdPa-rU"}"into a distractingly breath-taking vista"]
+    [:a {:href "https://www.youtube.com/watch?v=Zya8jdPa-rU"} "into a distractingly breath-taking vista"]
     ". after that first time, every pairing placed before you is a mountain. the sublime seizes."]
    [:p "T2722 started as a pop-up for hot chocolate fest in the Weslian hotel. they were easily the best hot chocolate that year, and have continued to levitate above the competition thence. for 2 years they've been doing pop-ups for some of the worlds biggest brands, and hosting tastings for some of the city's richest people. all ingredients are of a highest quality you can find in this city. it's definitely the priciest cafe on this list, but you can only get comparable quality in Tokyo or Paris for twice the price."]
    (cutout (location 51.043029027997044 -114.03897643163158))
@@ -224,10 +224,10 @@
            (sub-aspect "baked-goods" 3 ""))
    (aspect "vibes" 3 "" (sub-aspect "apollonian-aestheticism" 3 ""))
    (other-bevvies 3 "While the emphasis is on coffee and tea, they have a few fascinating items at the back of the menu"
-           (sub-aspect "tea" 3 "")
-           (sub-aspect "hot-chocolate" 3 "")
-           (sub-aspect "misc" 3 "")
-           (sub-aspect "variety" 3 ""))])
+                  (sub-aspect "tea" 3 "")
+                  (sub-aspect "hot-chocolate" 3 "")
+                  (sub-aspect "misc" 3 "")
+                  (sub-aspect "variety" 3 ""))])
 
 (def mobSquad
   [{:id "mobSquad"
@@ -301,7 +301,6 @@
    (aspect "vibes" 2 "tech worker" (md "vibes/index"))
    (aspect "food" 2 "above average, but nothing groundbreaking" [:p "sourced from the lovely " [:a {:href "https://www.kanyoucake.com/"} "Kan U Cake"]])
    (aspect "staff" 3 "Alex is really good at his job")
-   (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")
-   ])
+   (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")])
 
 (def cafes [european-bakery velet monogram t2722 mobSquad q-lab analog-bankers-hall semantics (particle)])

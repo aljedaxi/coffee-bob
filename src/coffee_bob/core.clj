@@ -14,8 +14,8 @@
             [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe silly-details]]
             [coffee-bob.util :refer [depn]]
             [coffee-bob.rdf :refer [top-features]]
+            [coffee-bob.taxa :refer [taxonomy]]
             [coffee-bob.html-utils :as h]))
-
 
 (defn get-assets []
   (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif|css)"])
@@ -40,7 +40,6 @@
       (sequential? children) (map f children)
       :else nil)))
 
-
 (defn top-feature
   [{:keys [prefLabel definition editorialNote scopeNote example id topConceptOf narrower]}
    & children]
@@ -54,17 +53,6 @@
    (if scopeNote (skos "scopeNote" scopeNote) nil)
    (nar {} narrower)
    children])
-
-(def taxonomy
-  (layout
-   {:prefix "bob: http://localhost:3000/taxonomy/#"} ;TODO
-   [:main
-    [:hgroup [:h1 "the calgary coffee vocabulary"]
-     [:p "ways of talking about coffee"]]
-    (map
-     (fn [[k {:as all}]]
-       (top-feature (merge all {:id k})))
-     top-features)]))
 
 (defn pages []
   (defn cafe-list-item [[props & rest]]
@@ -80,10 +68,10 @@
           rating-lis (map
                       (fn [[_ {:keys [id resource]} [_tagname _heading [_tag & rest]]]]
                         (let [rating-val (get-rating-val rest)]
-                         [:li {:property "reviewRating" :typeof "Rating"}
-                          [:a {:property "reviewAspect"
-                               :href (format "/taxonomy%s" resource)} id]
-                          [:span {:property "ratingValue"} rating-val]]))
+                          [:li {:property "reviewRating" :typeof "Rating"}
+                           [:a {:property "reviewAspect"
+                                :href (format "/taxonomy%s" resource)} id]
+                           [:span {:property "ratingValue"} rating-val]]))
                       ratings)]
       [:details {:typeof "CriticReview"}
        [:summary
@@ -120,14 +108,12 @@
                  (layout
                   {}
                   [:main
-                  (m/file->hiccup "./resources/static/about.md")
-                   ]))
+                   (m/file->hiccup "./resources/static/about.md")]))
       "/about-me/" (html5
-                 (layout
-                  {}
-                  [:main
-                  (m/file->hiccup "./resources/static/about-me.md")
-                   ]))
+                    (layout
+                     {}
+                     [:main
+                      (m/file->hiccup "./resources/static/about-me.md")]))
       "/taxonomy/" (html5 taxonomy)}
      cafe-map)))
 
