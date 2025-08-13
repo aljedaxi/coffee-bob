@@ -12,7 +12,7 @@
 (def bottom-links
   [[:a {:href "/about"} "about"]
    [:a {:href "/about-me"} "about me"]
-   [:a {:href "/coffee-bob"} "home"]
+   [:a {:href "/"} "home"]
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]
    [:span "v0.1.0"]])
