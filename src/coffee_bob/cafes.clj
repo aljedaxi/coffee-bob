@@ -9,6 +9,8 @@
 (defn bobbery [s] (format "%s%s" bob-prefix s))
 (defn class-link [s] (format "%s%s" bob-prefix (capitalize s)))
 
+(defn generic-md [s] (->> s (format "./resources/static/%s.md") m/file->hiccup list))
+
 (def bottom-links
   [[:a {:href "/about"} "about"]
    [:a {:href "/about-me"} "about me"]
@@ -79,6 +81,8 @@
     [:details [:summary {:property "ratingExplanation"} summary]
      [:div.dented children]]))
 
+(defn reviewBody [& children] [:section {:property "reviewBody"} children])
+
 (defn reviewRating [level nps title id & children]
   [:section {:id title
              :resource (format "#%s" id)
@@ -113,8 +117,9 @@
     :name "European Bakery"
     :color "#e83326"
     :summary "a bakery that serves surprisingly good turkish coffee"}
-   [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
-   [:p "all in all, this is a hidden gem, and the reason i made this website."]
+   (reviewBody
+    [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
+    [:p "all in all, this is a hidden gem, and the reason i made this website."])
    (cutout (location 51.03766612184806 -114.07219196898996))
    (aspect "coffee" 2 "they only serve turkish coffee. it's good."
            (sub-aspect "price" 3 nil)
@@ -134,9 +139,10 @@
     :color "#ff005d"
     :name "Velet Bike-Ski Cafe"
     :summary "coffee, turkish baked goods, and bike/ski repairs"}
-   [:p "velet is actually cool, in that effervescent, classical american/french sense. something about the japanese hiphop, turkish menu items, the snowboarding videos constantly playing on the tv, the exposed pillars and brick walls, and the used skis everywhere, that pulls together into something that feels real and raw. weeds comes close, but weeds feels more middle aged, comfortably not cool anymore, focused now on being cozy. any object in here could speak for lifetimes."]
-   [:p "a while ago, i had the distinct pleasure of spending a few days in whistler. velet would fit perfectly into that scene; not just in decor or design philosophy, but the coffee is scary reminiscent of some of the best spros i had there."]
-   [:p "finally, i'd like to note that this is also a bike/ski tune up shop. i don't have either of those so i can't speak to the quality, but i get the feeling the owner knows what he's doing."]
+   (reviewBody
+    [:p "velet is actually cool, in that effervescent, classical american/french sense. something about the japanese hiphop, turkish menu items, the snowboarding videos constantly playing on the tv, the exposed pillars and brick walls, and the used skis everywhere, that pulls together into something that feels real and raw. weeds comes close, but weeds feels more middle aged, comfortably not cool anymore, focused now on being cozy. any object in here could speak for lifetimes."]
+    [:p "a while ago, i had the distinct pleasure of spending a few days in whistler. velet would fit perfectly into that scene; not just in decor or design philosophy, but the coffee is scary reminiscent of some of the best spros i had there."]
+    [:p "finally, i'd like to note that this is also a bike/ski tune up shop. i don't have either of those so i can't speak to the quality, but i get the feeling the owner knows what he's doing."])
    (aspect
     "coffee" 2 "solid! fairly standard menu with little turkish additions"
     [:p "(please don't take turkish too seriously. the ottoman empire was very large and very influential.)"]
@@ -152,30 +158,30 @@
     (sub-aspect "comfy" 3 "fireplace. most of the seats are cushy. most of the colours are warm; most of the materials are warm, worn, exposed, rough. the staff is friendly and inviting."))])
 
 (def semantics
-  [{:id "semantics"
-    :name "Semantics Cafe"
-    :color "#5ba8f7"
-    :summary "too early to say, but i'm interested in what's to come"}
-   [:p "semantics was dreaming;"]
-   (aspect
-    "coffee" 2 "solid! on par with the alfornos of the world"
-    [:p "pleasant almond notes. mild roastiness. mild acidity. very par, very middle of the road."]
-    (sub-aspect "espresso" 2 "nothing special")
-    (sub-aspect "short-drinks" 2 "smooth, inoffensive."))
-   (aspect
-    "vibes" 3 "this " [:em "must"] " be understood in the fullest, most diffuse sense."
-    (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
-    (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door")
-    (sub-aspect "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."))])
+  (let [id "semantics"
+        md #(->> % (format "%s/%s" id) generic-md)]
+    [{:id id :name "Semantics Cafe" :color "#5ba8f7"
+      :summary "too early to say, but i'm interested in what's to come"}
+     (aspect
+      "coffee" 2 "solid! on par with the alfornos of the world"
+      [:p "pleasant almond notes. mild roastiness. mild acidity. very par, very middle of the road."]
+      (sub-aspect "espresso" 2 "nothing special")
+      (sub-aspect "short-drinks" 2 "smooth, inoffensive."))
+     (aspect
+      "vibes" 3 "this " [:em "must"] " be understood in the fullest, most diffuse sense."
+      (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
+      (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door")
+      (sub-aspect "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."))]))
 
 (def aubade [:a {:href "https://www.vancouvercoffeesnob.com/chinatown/aubade-coffee-2/"} "aubade"])
 (def glitch [:a {:href "https://tokyocoffee.org/2016/04/15/glitch-coffee-roasters/"} "glitch"])
 
 (def monogram
   [{:id "monogram" :name "Monogram" :color "#997600" :summary "what was the crown jewel of the calgary scene" :recc "short-drinks"}
-   [:p "i don't have—a lot of—insider knowledge. but i pay close attention to some things when i go to cafes, especially when i go to the same cafe almost every day. Monogram was that for me. even " aubade " ran Monogram as their espresso."]
-   [:p "but things have been shifting. many things that i need to write a general \"scene think piece\" on that don't fit in this article, but also smaller things. the cortados went from being routinely excellent, to sometimes excellent, to always good. staff churn has been increasing. the seasonal drinks have all kinda sucked recently (including the hot chocolate fest hot chocolates)."]
-   [:p "Monogram is still better than like, Deville or Analog or Phil and Sebastian, but the margin gets slimmer every year. It's all a bit depressing to think about."]
+   (reviewBody
+    [:p "i don't have—a lot of—insider knowledge. but i pay close attention to some things when i go to cafes, especially when i go to the same cafe almost every day. Monogram was that for me. even " aubade " ran Monogram as their espresso."]
+    [:p "but things have been shifting. many things that i need to write a general \"scene think piece\" on that don't fit in this article, but also smaller things. the cortados went from being routinely excellent, to sometimes excellent, to always good. staff churn has been increasing. the seasonal drinks have all kinda sucked recently (including the hot chocolate fest hot chocolates)."]
+    [:p "Monogram is still better than like, Deville or Analog or Phil and Sebastian, but the margin gets slimmer every year. It's all a bit depressing to think about."])
    (cutout (location 51.049096124603615, -114.06718542186842))
    (aspect "coffee" 2 "Monogram is a no-mans-land between your 2s and your 3s"
            [:p "you should think of Monogram as quitessential third wave, calgary's revolver."]
@@ -187,12 +193,13 @@
   [{:id "t2722" :name "T2722" :color "#1077f3"
     :summary "something that requires an entirely new language"
     :reqq "flight"}
-   [:p "genuinely world class. consider yourself fortunate we have access to this"]
-   [:p "we might think of T2722 as having three prongs: coffee, tea, and pastry. this is paralleled in the staff, 3 experts: Elle, Julian, and the mysterious french baker who i haven't spoken with. these three work 12 hour shifts, every day. the depths of their passion is a mystery even to me."]
-   [:p "the core idea is pairing these prongs. for each baked good, there's a matching tea or coffee drink. from each pairing emerges—at times—a truly sublime experience. i mean this very specifically and technically. it's like walking through a hallway that opens onto a cliff face, stumbling and flailing as you try not to fall "
-    [:a {:href "https://www.youtube.com/watch?v=Zya8jdPa-rU"} "into a distractingly breath-taking vista"]
-    ". after that first time, every pairing placed before you is a mountain. the sublime seizes."]
-   [:p "T2722 started as a pop-up for hot chocolate fest in the Weslian hotel. they were easily the best hot chocolate that year, and have continued to levitate above the competition thence. for 2 years they've been doing pop-ups for some of the worlds biggest brands, and hosting tastings for some of the city's richest people. all ingredients are of a highest quality you can find in this city. it's definitely the priciest cafe on this list, but you can only get comparable quality in Tokyo or Paris for twice the price."]
+   (reviewBody
+    [:p "genuinely world class. consider yourself fortunate we have access to this"]
+    [:p "we might think of T2722 as having three prongs: coffee, tea, and pastry. this is paralleled in the staff, 3 experts: Elle, Julian, and the mysterious french baker who i haven't spoken with. these three work 12 hour shifts, every day. the depths of their passion is a mystery even to me."]
+    [:p "the core idea is pairing these prongs. for each baked good, there's a matching tea or coffee drink. from each pairing emerges—at times—a truly sublime experience. i mean this very specifically and technically. it's like walking through a hallway that opens onto a cliff face, stumbling and flailing as you try not to fall "
+     [:a {:href "https://www.youtube.com/watch?v=Zya8jdPa-rU"} "into a distractingly breath-taking vista"]
+     ". after that first time, every pairing placed before you is a mountain. the sublime seizes."]
+    [:p "T2722 started as a pop-up for hot chocolate fest in the Weslian hotel. they were easily the best hot chocolate that year, and have continued to levitate above the competition thence. for 2 years they've been doing pop-ups for some of the worlds biggest brands, and hosting tastings for some of the city's richest people. all ingredients are of a highest quality you can find in this city. it's definitely the priciest cafe on this list, but you can only get comparable quality in Tokyo or Paris for twice the price."])
    (cutout (location 51.043029027997044 -114.03897643163158))
    (aspect "coffee" 3 "a principled, french approach to specialty"
            [:p "a facet is a window; the facet holds the gem up, and pours light into it, and sucks light out of it."]
@@ -234,8 +241,9 @@
     :name "MobSquad Cafe"
     :color "#9b54f3"
     :summary "gorgeous views"}
-   [:p "absolutely the best views in the city. if you can sneak in with a thermos of coffee from elsewhere, you've got the best of both worlds. inside, it feels like the decor was decided by an up and coming oil-sands failson with lots of capital and little taste."]
-   [:p "MobSquad cafe doubles as someone to marry to get a green card."]
+   (reviewBody
+    [:p "absolutely the best views in the city. if you can sneak in with a thermos of coffee from elsewhere, you've got the best of both worlds. inside, it feels like the decor was decided by an up and coming oil-sands failson with lots of capital and little taste."]
+    [:p "MobSquad cafe doubles as someone to marry to get a green card."])
    (cutout (location 51.04511335156388 -114.06521097396123))
    (aspect "coffee" 1 "genuinely the worst coffee i've had in years"
            [:p "bitter, acidic, sharp. mild petroleum note. primary notes include ash and dust. i wipe my ass and i slap my nuts. this is it, the apocalypse."]
@@ -256,8 +264,9 @@
 
 (def q-lab
   [{:id "q-lab" :name "Q Lab" :color "#c85b00" :summary "a great place to try all kinds of stuff"}
-   [:p "i've got a feeling that i didn't get the full Q Lab experience. sure, i got the flight, and i was walked through the options, and i chose cool options and spoke with the barista. somewhere along the line, i got the feeling i missed something essential. when most coffee houses put the word \"coffee\" on the menu, they mean only the \"coffee liqueur\", the liquid byproduct of the coffee brewing process. when Q Labs uses the word coffee, they mean liquid, roasted beans, green coffee, &c."]
-   [:p "There's something very special here that's easily missed."]
+   (reviewBody
+    [:p "i've got a feeling that i didn't get the full Q Lab experience. sure, i got the flight, and i was walked through the options, and i chose cool options and spoke with the barista. somewhere along the line, i got the feeling i missed something essential. when most coffee houses put the word \"coffee\" on the menu, they mean only the \"coffee liqueur\", the liquid byproduct of the coffee brewing process. when Q Labs uses the word coffee, they mean liquid, roasted beans, green coffee, &c."]
+    [:p "There's something very special here that's easily missed."])
    (aspect "coffee" 2 "closer to cupping"
            [:p "this is what's convinced me i need an internal ranking system among 2s. this is the strongest 2 on the site. the coffee is good. the coffee is great."]
            [:p "it just isn't in the same league as Sought and Found, Paradigm Spark, T2722, &c., because the place is more about green than they are about brown. it's closer to cupping in the sense that this is a pure exploration of terroir and processing technique, to the exclusion of brewing technique."]
@@ -272,9 +281,10 @@
 
 (def analog-bankers-hall
   [{:id "analog-bankers-hall" :name "Analog — Banker's Hall" :color "#008c5c" :summary "Really weirdly beautiful"}
-   [:p "a plus 15 is a glass box, 15 meters above the ground. you pass through that glass box into a tall, slim glass box. You pass countless, uniform glass boxes, housing countless, multiform businesses. tinted windows chill light; it spills out onto marble."]
-   [:p "marble is the odd accent in dark wood. green snakes down the rafters, and faded ruby tiling holds up the espresso machine. dark wood laminates spills out from the machine, bearing low leather seating and wide wooden tables. the lights are round and warm."]
-   [:p "does this location have a distinct identity to—say—the Deville in the Google building? no. does it—as the kids say—beat the airspace allegations? certainly not. but the way it suddenly shatters the undifferentiated droll of the +15s is irresistible—every now and then."]
+   (reviewBody
+    [:p "a plus 15 is a glass box, 15 meters above the ground. you pass through that glass box into a tall, slim glass box. You pass countless, uniform glass boxes, housing countless, multiform businesses. tinted windows chill light; it spills out onto marble."]
+    [:p "marble is the odd accent in dark wood. green snakes down the rafters, and faded ruby tiling holds up the espresso machine. dark wood laminates spills out from the machine, bearing low leather seating and wide wooden tables. the lights are round and warm."]
+    [:p "does this location have a distinct identity to—say—the Deville in the Google building? no. does it—as the kids say—beat the airspace allegations? certainly not. but the way it suddenly shatters the undifferentiated droll of the +15s is irresistible—every now and then."])
    (aspect "coffee" 2 "par. slightly worse than the 17th location.")
    (aspect "price" 2 "exactly what you'd expect")
    (aspect "vibes" 2 "see above"
@@ -283,24 +293,21 @@
            (sub-aspect "seating" 3 "bountiful"))
    (aspect "staff" 2 "cool enough people")])
 
-(defn particle []
-  (defn md [s]
-    (->> s
-         (format "./resources/static/particle/%s.md")
-         m/file->hiccup
-         list))
-  [{:id "particle" :name "Particle Coffee" :color "#72b622"
-    :summary "clean washed coffees and fantastic seasonals"}
-   (md "write-up")
-   (cutout (location 51.03766708785928 -114.08121351161644)
-           (insta "particlecoffee"))
-   (aspect "coffee" 3 "clean, complex, complete"
-           (pour-over 3 "big on the nose; round in the mouth; elegant on the palate" (md "coffee/pourOver"))
-           (short-drink 3 "my man makes a mean cortado" [:p "you can't go to Particle without getting an oat milk one and one. if you're feeling saucy, consider the 1&amp;1&amp;1: a spro, a cortado, and a dirty or a shakerato."]))
-   (other-bevvies 3 "some really neat stuff" (md "OtherBevvies"))
-   (aspect "vibes" 2 "tech worker" (md "vibes/index"))
-   (aspect "food" 2 "above average, but nothing groundbreaking" [:p "sourced from the lovely " [:a {:href "https://www.kanyoucake.com/"} "Kan U Cake"]])
-   (aspect "staff" 3 "Alex is really good at his job")
-   (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")])
+(def particle
+  (let [id "particle"
+        md #(->> % (format "%s/%s" id) generic-md)]
+    [{:id id :name "Particle Coffee" :color "#72b622" :summary "clean washed coffees and fantastic seasonals"}
+     (reviewBody (md "reviewBody"))
+     (cutout (location 51.03766708785928 -114.08121351161644) (insta "particlecoffee"))
+     (aspect "coffee" 3 "clean, complex, complete"
+             (pour-over 3 "big on the nose; round in the mouth; elegant on the palate"
+                        (md "coffee/pourOver"))
+             (short-drink 3 "my man makes a mean cortado"
+                          [:p "you can't go to Particle without getting an oat milk one and one. if you're feeling saucy, consider the 1&amp;1&amp;1: a spro, a cortado, and a dirty or a shakerato."]))
+     (other-bevvies 3 "some really neat stuff" (md "OtherBevvies"))
+     (aspect "vibes" 2 "tech worker" (md "vibes/index"))
+     (aspect "food" 2 "above average, but nothing groundbreaking" [:p "sourced from the lovely " [:a {:href "https://www.kanyoucake.com/"} "Kan U Cake"]])
+     (aspect "staff" 3 "Alex is really good at his job")
+     (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")]))
 
-(def cafes [european-bakery velet monogram t2722 mobSquad q-lab analog-bankers-hall semantics (particle)])
+(def cafes [european-bakery velet monogram t2722 mobSquad q-lab analog-bankers-hall semantics particle])
