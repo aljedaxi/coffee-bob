@@ -43,6 +43,7 @@
 (def taxonomy
   (layout
    {:headstuff (list
+                [:title "ways of talking about coffee"]
                 [:style ".children {display: flex; gap: 4px;}"]
                 [:style "h2 {margin: 0} section {padding-block: 2rem !important}"]
                 [:style "section div {display: grid; grid-template-columns: 1fr 0.5fr; align-items: baseline}"])

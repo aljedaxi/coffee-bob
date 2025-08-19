@@ -18,6 +18,21 @@
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]])
 
+(defn open-graph [{:keys [title description]}]
+  (let [cofflake "/public/cofflake-render-2025-08-18.avif"
+        prop (fn [p c] [:meta {:property p :content c}])]
+    (list
+     (prop "twitter:image" cofflake)
+     (prop "twitter:card" "summary")
+     (prop "description" description)
+     (prop "og:description" description)
+     (prop "og:image" cofflake)
+     (prop "og:site_name" "The Calgary Coffee Bob")
+     (prop "og:title" title)
+     (prop "og:audio" "https://thirdworlds.net/files/Death Grips EP/Death Grips - Death Grips (Next Grips).mp3")
+     )))
+
+
 (defn layout [{:keys [prefix headstuff id version]} & children]
   [:html {:lang "en-CA" :id id :prefix prefix}
    [:head
@@ -44,6 +59,8 @@
    {:id id
     :headstuff
     (list
+     (open-graph {:title (format "a review of %s" name)
+                  :description summary})
      [:title name]
      [:script {:type "module" :async true :src "/public/spider.js"}])}
    [:main {:resource "" :property "review" :typeof "CriticReview"}

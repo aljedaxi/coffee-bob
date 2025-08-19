@@ -4,7 +4,7 @@
    [clojure.data.json :as json]
    [markdown-to-hiccup.core :as m]
    [hiccup2.core :refer [html]]
-   [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe]]
+   [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe open-graph]]
    [coffee-bob.util :refer [depn]]
    [coffee-bob.taxa :refer [taxonomy]]
    [coffee-bob.html-utils :as h]))
@@ -67,6 +67,9 @@
         speculationRules {:prefetch [{:where {:href_matches "/*"}}]
                           :eagerness "moderate"}
         headstuff (list
+                   (open-graph {:title "the calgary coffee bob"
+                                :description "a coffee review blog for the snob, and the bob"})
+                   [:title "the calgary coffee bob"]
                    (h/stylesheet "/public/index.css")
                    [:script {:type "speculationrules"}
                     (json/write-str speculationRules)]
@@ -82,12 +85,13 @@
       "/about/" (fn [{:keys [version]}]
                   (html5
                    (layout
-                    {:version version}
+                    {:version version
+                     :headstuff (list [:title "about the calgary coffee bob"])}
                     [:main
                      (m/file->hiccup "./resources/static/about.md")])))
       "/about-me/" (html5
                     (layout
-                     {}
+                     {:headstuff (list [:title "about the bob"])}
                      [:main
                       (m/file->hiccup "./resources/static/about-me.md")]))
       "/taxonomy/" (html5 taxonomy)}
