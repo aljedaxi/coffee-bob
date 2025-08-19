@@ -4,7 +4,7 @@
    [optimus.export]
    [optimus.assets :as assets]
    [optimus.optimizations :as optimizations]
-   [coffee-bob.pages :refer [pages]]))
+   [coffee-bob.pages :as p]))
 
 (def context
   (let [[_ ga version] (read-string (slurp "project.clj"))]
@@ -20,7 +20,8 @@
       (optimizations/add-last-modified-headers)))
 
 (defn -main [target-dir]
-  (let [assets (optimize (get-assets) {})]
+  (let [assets (optimize (get-assets) {})
+        pages (p/pages)]
     (stasis/empty-directory! target-dir)
     (optimus.export/save-assets assets target-dir)
-    (stasis/export-pages (pages) target-dir)))
+    (stasis/export-pages pages target-dir context)))
