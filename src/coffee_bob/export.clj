@@ -11,7 +11,7 @@
     {:version (format "v%s" version)}))
 
 (defn get-assets []
-  (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif|css)"])
+  (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif|css|png|svg)"])
        (map #(assoc % :path (format "/public%s" (:path %))))))
 
 (defn optimize [assets options]

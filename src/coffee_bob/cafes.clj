@@ -19,7 +19,7 @@
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]])
 
 (defn open-graph [{:keys [title description]}]
-  (let [cofflake "/public/cofflake-render-2025-08-18.avif"
+  (let [cofflake "/public/cofflake-render-2025-08-18.svg"
         prop (fn [p c] [:meta {:property p :content c}])]
     (list
      (prop "twitter:image" cofflake)
