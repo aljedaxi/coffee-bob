@@ -3,7 +3,7 @@
    [clojure.pprint :as p]
    [clojure.data.json :as json]
    [markdown-to-hiccup.core :as m]
-   [hiccup.page :refer [html5]]
+   [hiccup2.core :refer [html]]
    [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe]]
    [coffee-bob.util :refer [depn]]
    [coffee-bob.taxa :refer [taxonomy]]
@@ -13,6 +13,8 @@
 (depn cafe-url ->> (format "/coffee-house/%s/"))
 (depn typeof some-> (nth 1) (get :typeof))
 (depn property some-> (nth 1) (get :property))
+
+(defn html5 [input] (-> input html str))
 
 (defn skos [property & children]
   [:p {:property (format "skos:%s" property)} children])
@@ -26,20 +28,6 @@
       (keyword? children) (f children)
       (sequential? children) (map f children)
       :else nil)))
-
-(defn top-feature
-  [{:keys [prefLabel definition editorialNote scopeNote example id topConceptOf narrower]}
-   & children]
-  [:section {:id id :about (format "[bob%s]" id) :typeof "[bob:Feature]"}
-   [:div {:style "display: grid; grid-template-columns: 1fr 0.5fr; align-items: baseline"}
-    [:h2 {:property "skos:prefLabel" :style "display: inline"} (or prefLabel id)]
-    (if topConceptOf [:span {:property "skos:topConceptOf"} topConceptOf] nil)]
-   (skos "definition" definition)
-   (if editorialNote (skos "editorialNote" editorialNote) nil)
-   (if example [:p "eg. " [:span {:property "skos:example"} example]] nil)
-   (if scopeNote (skos "scopeNote" scopeNote) nil)
-   (nar {} narrower)
-   children])
 
 (defn cafe-list-item [[props & rest]]
   (let [{:keys [id name summary color]} props
