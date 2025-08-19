@@ -3,3 +3,4 @@ serve:
 
 out:
 	nix shell nixpkgs#leiningen --command lein run -m coffee-bob.export $@
+	cd $@ && npx serve
