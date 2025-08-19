@@ -20,8 +20,7 @@
       (optimizations/add-cache-busted-expires-headers)
       (optimizations/add-last-modified-headers)))
 
-(def target-dir "./out")
-(defn -main []
+(defn -main [target-dir]
   (let [assets (optimize (get-assets) {})]
     (stasis/empty-directory! target-dir)
     (optimus.export/save-assets assets target-dir)
