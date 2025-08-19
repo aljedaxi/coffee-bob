@@ -28,7 +28,7 @@
 
 (defn top-feature
   [{:keys
-    [prefLabel definition editorialNote scopeNote example id ]}
+    [prefLabel definition editorialNote scopeNote example id]}
    & children]
   (print children)
   [:section {:id id :about (format "[bob:%s]" id) :typeof "[schema:reviewAspect]"}
@@ -50,6 +50,8 @@
    [:main
     [:hgroup [:h1 "the calgary coffee vocabulary"]
      [:p "ways of talking about coffee"]]
+    [:p "TODO explain NPS"]
+    [:p "TODO talk about your experience playing that one horror game and how you relate to the question of palates. "]
     (top-feature
      {:id "Coffee" :editorialNote (md "coffee/editorialNote")}
      (skos "scopeNote" (md "coffee/scopeNote"))
@@ -76,7 +78,7 @@
     (top-feature
      {:id "PourOvers" :prefLabel "pour overs &c." :definition "if you could serve it at brewer's cup, it's in"})
     (top-feature
-     {:id "Space" :definition "the parts of being that americans call 'common sense', 'objective'" }
+     {:id "Space" :definition "the parts of being that americans call 'common sense', 'objective'"}
      (narrower "Power" "Seating" "Architecture"))
     (top-feature
      {:id "Architecture"
@@ -92,7 +94,7 @@
       :example "3 bucks for an americano is cheap."
       :definition "is this cheap? is this everyday bro? or is this a real excursion? a splurge? not normalized for quality; pure function of the market. please note that this is against other specialty shops, not tim hortons."})
     (top-feature
-     {:id "Food" :definition "edible solids, and perhaps soups." }
+     {:id "Food" :definition "edible solids, and perhaps soups."}
      (narrower "BakedGoods"))
     (top-feature
      {:id "Vibes"
@@ -111,7 +113,7 @@
     (top-feature
      {:id "Comfy" :definition "can you really sink in here? focus on soft, worn materials; warm colours; open spaces"})
     (top-feature
-     {:id "OtherBevvies" :prefLabel "drinks" :definition "drinks that aren't coffee" }
+     {:id "OtherBevvies" :prefLabel "drinks" :definition "drinks that aren't coffee"}
      (narrower "HotChocolate" "MiscDrinks"))
     (top-feature
      {:id "Tea" :definition "a drink produced by immersion brewing the leaves of camellia sinensis, or whatever else you want these days."
