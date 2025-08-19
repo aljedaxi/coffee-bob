@@ -24,8 +24,8 @@ section {
   margin: 0;
 }
 details[open] > summary {
-  list-style-type: \"❦ \";
+  list-style-type: "❦ ";
 }
 details > summary {
-  list-style-type: \"❧ \";
+  list-style-type: "❧ ";
 }

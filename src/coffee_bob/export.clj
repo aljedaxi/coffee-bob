@@ -16,7 +16,6 @@
 
 (defn optimize [assets options]
   (-> assets
-      (optimizations/minify-css-assets options)
       (optimizations/add-cache-busted-expires-headers)
       (optimizations/add-last-modified-headers)))
 
