@@ -8,6 +8,7 @@
 (def bob-prefix "/taxonomy#")
 (defn bobbery [s] (format "%s%s" bob-prefix s))
 (defn class-link [s] (format "%s%s" bob-prefix (capitalize s)))
+(defn full-bobber [s] (format "https://coffee-bob.dasein-online.ca%s" s))
 
 (defn generic-md [s] (->> s (format "./resources/static/%s.md") m/file->hiccup list))
 
@@ -18,8 +19,10 @@
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]])
 
+
 (defn open-graph [{:keys [title description]}]
-  (let [cofflake "/public/cofflake-render-2025-08-18.svg"
+  (let [cofflake (full-bobber "/public/cofflake-render-2025-08-18.svg")
+        cofflake-png (full-bobber "/public/cofflake-render-2025-08-18.png")
         prop (fn [p c] [:meta {:property p :content c}])]
     (list
      (prop "twitter:image" cofflake)
@@ -27,6 +30,7 @@
      (prop "description" description)
      (prop "og:description" description)
      (prop "og:image" cofflake)
+     (prop "og:image" cofflake-png)
      (prop "og:site_name" "The Calgary Coffee Bob")
      (prop "og:title" title)
      (prop "og:audio" "https://thirdworlds.net/files/Death Grips EP/Death Grips - Death Grips (Next Grips).mp3")
