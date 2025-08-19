@@ -1,5 +1,5 @@
 (ns coffee-bob.taxa
-  (:require [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe silly-details]]
+  (:require [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe]]
             [markdown-to-hiccup.core :as m]
             [coffee-bob.html-utils :as h]
             [coffee-bob.rdf :refer [top-features]]))

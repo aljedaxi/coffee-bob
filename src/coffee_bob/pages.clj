@@ -4,7 +4,7 @@
    [clojure.data.json :as json]
    [markdown-to-hiccup.core :as m]
    [hiccup.page :refer [html5]]
-   [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe silly-details]]
+   [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe]]
    [coffee-bob.util :refer [depn]]
    [coffee-bob.taxa :refer [taxonomy]]
    [coffee-bob.html-utils :as h]))
@@ -79,10 +79,9 @@
         speculationRules {:prefetch [{:where {:href_matches "/*"}}]
                           :eagerness "moderate"}
         headstuff (list
-                   silly-details
                    (h/stylesheet "/public/index.css")
-                   [:script {:type "speculationrules"} (json/write-str speculationRules)]
-                   [:style ".ratings { & li {display: contents;} display: grid; grid-template-columns: repeat(5, 1fr 0.5fr); padding: 0; }"]
+                   [:script {:type "speculationrules"}
+                    (json/write-str speculationRules)]
                    [:script {:type "module" :async true :src "/public/spider.js"}])]
     (merge
      {"/" (fn [{:keys [version]}]

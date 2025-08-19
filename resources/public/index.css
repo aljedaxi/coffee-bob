@@ -1,4 +1,13 @@
 nav ul {
-    display: grid;
-    gap: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.ratings {
+  & li {
+    display: contents;
+  }
+  display: grid;
+  grid-template-columns: repeat(5, 1fr 0.5fr);
+  padding: 0;
 }

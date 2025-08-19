@@ -23,6 +23,7 @@
    [:head
     headstuff
     (h/stylesheet "/public/main.css")
+    (h/stylesheet "/public/common.css")
     [:meta {:charset "utf-8"}]
     [:link {:rel "icon" :href "/public/favicon.ico" :sizes "any"}]
     [:script {:src "/public/mittens.js"}]]
@@ -38,22 +39,13 @@
 (defn cutout [& children]
   (list [:hr] [:div.cutout children] [:hr]))
 
-(def silly-details
-  [:style " details[open] > summary {list-style-type: \"❦ \";} details > summary {list-style-type: \"❧ \";}"])
-
 (defn cafe [{:keys [id name summary color href]} & children]
   (layout
    {:id id
     :headstuff
     (list
      [:title name]
-     [:style "svg > text {fill: var(--fg);}"]
-     [:script {:type "module" :async true :src "/public/spider.js"}]
-     [:style ".cutout {display: flex; justify-content: center; gap: 6px;}"]
-     silly-details
-     [:style "section {display: contents;}"]
-     [:style ".spread {display: flex; justify-content: space-between; align-items: baseline; padding-block: 1rem; & h2, h3 {margin: 0;}}"]
-     [:style ".dented {margin-inline-start: 20.75px; padding: 0} .golden-ratio + p {margin: 0}"])}
+     [:script {:type "module" :async true :src "/public/spider.js"}])}
    [:main {:resource "" :property "review" :typeof "CriticReview"}
     [:hgroup
      [:h1.coffeehouse {:resource ""
