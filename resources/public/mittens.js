@@ -1,19 +1,15 @@
-const pictureSrc = '/public/coffee.gif'; // RIP SHII.ORG 'http://shii.org/b/mittens.gif'; //the location of the mittens, formerly static.
+const pictureSrc = '/public/coffee.gif';
 const pictureWidth = 40;            //the width of the mittens
 const pictureHeight = 46;           //the height of the  mittens
 const numFlakes = 10;               //the number of  mittens
 const downSpeed = 0.01;          
 const lrFlakes = 10;         
-let EmergencyMittens = false;     
 
-//safety checks. Browsers will hang if this is wrong. If other values are wrong there will just be errors
-if( typeof( numFlakes ) != 'number' || Math.round( numFlakes ) != numFlakes || numFlakes < 1 ) { numFlakes = 10; }
-
-const style = document.createElement('style')
-style.innerText = '.hidden { display: none }'
-document.querySelector('head').appendChild(style)
+const style = document.createElement('style');
+style.innerText = '.hidden { display: none }';
+document.querySelector('head').appendChild(style);
 //draw the snowflakes
-for(let x = 0; x < numFlakes; x++) {
+for (let x = 0; x < numFlakes; x++) {
 	document.write('<div style="position:absolute;z-index:1;" class="cofflake hidden" id="snFlkDiv'+x+'"><img src="'+pictureSrc+'" height="'+pictureHeight+'" width="'+pictureWidth+'" alt="*" border="0"></div>');
 }
 
@@ -59,12 +55,13 @@ const getRefToDivNest = divName => document.querySelector(`#${divName}`)
 
 
 function dispenseMittens() {
-	if (EmergencyMittens) {
-		console.log('lol')
-	} else {
-		for (const e of document.querySelectorAll('.cofflake')) {
-			e.classList.remove('hidden')
-		}
-		EmergencyMittens = window.setInterval('mittensFall();',100);
+	const flakesFalling = [...document.querySelectorAll('.cofflake')]
+		  .some(e => !e.classList.contains('hidden'))
+	if (flakesFalling) {
+		return
 	}
+	for (const e of document.querySelectorAll('.cofflake')) {
+		e.classList.remove('hidden')
+	}
+	window.setInterval('mittensFall();',100);
 }

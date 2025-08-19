@@ -1,0 +1,24 @@
+(ns coffee-bob.export
+  (:require
+   [stasis.core :as stasis]
+   [optimus.export]
+   [optimus.assets :as assets]
+   [optimus.optimizations :as optimizations]
+   [coffee-bob.pages :refer [pages]]))
+
+(defn get-assets []
+  (->> (assets/load-assets "public" [#"/.*\.(avif|ico|js|gif|css)"])
+       (map #(assoc % :path (format "/public%s" (:path %))))))
+
+(defn optimize [assets options]
+  (-> assets
+      (optimizations/minify-css-assets options)
+      (optimizations/add-cache-busted-expires-headers)
+      (optimizations/add-last-modified-headers)))
+
+(def target-dir "./out")
+(defn -main []
+  (let [assets (optimize (get-assets) {})]
+    (stasis/empty-directory! target-dir)
+    (optimus.export/save-assets assets target-dir)
+    (stasis/export-pages (pages) target-dir)))
