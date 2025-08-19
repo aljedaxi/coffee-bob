@@ -7,7 +7,7 @@
    [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe silly-details]]
    [coffee-bob.util :refer [depn]]
    [coffee-bob.taxa :refer [taxonomy]]
-   [coffee-bob.html-utils :as h] ))
+   [coffee-bob.html-utils :as h]))
 
 (depn cafe-id -> first (get :id))
 (depn cafe-url ->> (format "/coffee-house/%s/"))
@@ -42,31 +42,30 @@
    children])
 
 (defn cafe-list-item [[props & rest]]
-(let [{:keys [id name summary color]} props
+  (let [{:keys [id name summary color]} props
         ratings (filter #(and (= (first %) :section)
-                            (= (typeof %) "Rating")) rest)
+                              (= (typeof %) "Rating")) rest)
         get-rating-val (fn [children]
-                        (some->> children
-                                (filter #(and (vector? %) (= (property %) "ratingValue")))
-                                first
-                                last
-                                first))
+                         (some->> children
+                                  (filter #(and (vector? %) (= (property %) "ratingValue")))
+                                  first
+                                  last
+                                  first))
         rating-lis (map
                     (fn [[_ {:keys [id resource]} [_tagname _heading [_tag & rest]]]]
-                    (let [rating-val (get-rating-val rest)]
+                      (let [rating-val (get-rating-val rest)]
                         [:li {:property "reviewRating" :typeof "Rating"}
-                        [:a {:property "reviewAspect"
-                            :href (format "/taxonomy%s" resource)} id]
-                        [:span {:property "ratingValue"} rating-val]]))
+                         [:a {:property "reviewAspect"
+                              :href (format "/taxonomy%s" resource)} id]
+                         [:span {:property "ratingValue"} rating-val]]))
                     ratings)]
     [:details {:typeof "CriticReview"}
-    [:summary
-    [:h2 {:style (format "display: inline; color: %s" color)
+     [:summary
+      [:h2 {:style (format "display: inline; color: %s" color)
             :property "itemReviewed" :typeof "CafeOrCoffeeShop"}
-        [:a {:style "color: inherit" :href (cafe-url id)} name]]
-    [:p {:property "abstract"} summary]]
-    [:ul.ratings rating-lis]]))
-
+       [:a {:style "color: inherit" :href (cafe-url id)} name]]
+      [:p {:property "abstract"} summary]]
+     [:ul.ratings rating-lis]]))
 
 (defn pages []
   (let [cafe-map-list (mapcat
@@ -84,19 +83,21 @@
                    (h/stylesheet "/public/index.css")
                    [:script {:type "speculationrules"} (json/write-str speculationRules)]
                    [:style ".ratings { & li {display: contents;} display: grid; grid-template-columns: repeat(5, 1fr 0.5fr); padding: 0; }"]
-                   [:script {:type "module" :async true :src "/public/spider.js"}])
-        index
-        (layout
-         {:headstuff headstuff}
-         [:main head-group [:spider-graph {:aspects "rdfa"}]
-          [:nav [:ul (map cafe-list-item cafes)]]])]
+                   [:script {:type "module" :async true :src "/public/spider.js"}])]
     (merge
-     {"/" (html5 index)
-      "/about/" (html5
-                 (layout
-                  {}
-                  [:main
-                   (m/file->hiccup "./resources/static/about.md")]))
+     {"/" (fn [{:keys [version]}]
+            (html5
+             (layout
+              {:headstuff headstuff
+               :version version}
+              [:main head-group [:spider-graph {:aspects "rdfa"}]
+               [:nav [:ul (map cafe-list-item cafes)]]])))
+      "/about/" (fn [{:keys [version]}]
+                  (html5
+                   (layout
+                    {:version version}
+                    [:main
+                     (m/file->hiccup "./resources/static/about.md")])))
       "/about-me/" (html5
                     (layout
                      {}

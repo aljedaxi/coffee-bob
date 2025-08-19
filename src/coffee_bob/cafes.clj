@@ -16,10 +16,9 @@
    [:a {:href "/about-me"} "about me"]
    [:a {:href "/"} "home"]
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
-   [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]
-   [:span "v0.1.0"]])
+   [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]])
 
-(defn layout [{:keys [prefix headstuff id]} & children]
+(defn layout [{:keys [prefix headstuff id version]} & children]
   [:html {:lang "en-CA" :id id :prefix prefix}
    [:head
     headstuff
@@ -29,7 +28,8 @@
     [:script {:src "/public/mittens.js"}]]
    [:body {:vocab "https://schema.org/" :typeof "WebPage"}
     children
-    [:footer (interpose " ❧ " bottom-links)]]])
+    [:footer
+     (interpose " ❧ " (if version (conj bottom-links version) bottom-links))]]])
 
 (defn coord [x y] (format "https://www.openstreetmap.org/#map=20/%f/%f" x y))
 (defn location [x y] [:a {:href (coord x y)} "location"])
@@ -95,12 +95,6 @@
 (defn sub-aspect [title nps sum & children]
   (reviewRating :h3 nps title title (aspect-body sum children)))
 
-; TODO try running nix run github:aljedaxi/rdfa2ttl "http://localhost:3000/euro/" to test
-; TODO everything is currently fucked. consult
-; * https://schema.org/CriticReview
-; * https://schema.org/Rating --- consider that only the first p of the body should be the ratingExplanation
-; * https://www.w3.org/TR/rdfa-lite
-; * https://www.w3.org/TR/rdfa-primer/
 (defn aspect [title nps sum & children]
   (reviewRating :h2 nps title (capitalize title) (aspect-body sum children)))
 
@@ -237,10 +231,10 @@
                   (sub-aspect "variety" 3 ""))])
 
 (def mobSquad
-  [{:id "mobSquad"
+  [{:id "mob-squad"
     :name "MobSquad Cafe"
     :color "#9b54f3"
-    :summary "gorgeous views"}
+    :summary "great views… beautiful views…"}
    (reviewBody
     [:p "absolutely the best views in the city. if you can sneak in with a thermos of coffee from elsewhere, you've got the best of both worlds. inside, it feels like the decor was decided by an up and coming oil-sands failson with lots of capital and little taste."]
     [:p "MobSquad cafe doubles as someone to marry to get a green card."])
@@ -298,7 +292,8 @@
         md #(->> % (format "%s/%s" id) generic-md)]
     [{:id id :name "Particle Coffee" :color "#72b622" :summary "clean washed coffees and fantastic seasonals"}
      (reviewBody (md "reviewBody"))
-     (cutout (location 51.03766708785928 -114.08121351161644) (insta "particlecoffee"))
+     (cutout (location 51.03766708785928 -114.08121351161644)
+             (insta "particlecoffee"))
      (aspect "coffee" 3 "clean, complex, complete"
              (pour-over 3 "big on the nose; round in the mouth; elegant on the palate"
                         (md "coffee/pourOver"))
