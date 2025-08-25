@@ -1,11 +1,9 @@
 (ns coffee-bob.taxa
-  (:require [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe]]
+  (:require [coffee-bob.cafes :refer [layout bobbery generic-md]]
             [markdown-to-hiccup.core :as m]
-            [coffee-bob.html-utils :as h]
-            [coffee-bob.rdf :refer [top-features]]))
+            [coffee-bob.html-utils :as h]))
 
-(defn md [s]
-  (->> s (format "./resources/static/taxonomy/%s.md") m/file->hiccup list))
+(def md (partial generic-md "taxonomy"))
 
 (defn skos [property & children]
   [:p {:property (format "skos:%s" property)} children])
@@ -19,7 +17,6 @@
   [:p "eg. " [:span {:property "skos:example"} children]])
 
 (defn nar [& children]
-  (print children)
   (cond
     (nil? children) nil
     (keyword? children) (apply narrower [children])
@@ -30,7 +27,6 @@
   [{:keys
     [prefLabel definition editorialNote scopeNote example id]}
    & children]
-  (print children)
   [:section {:id id :about (format "[bob:%s]" id) :typeof "[schema:reviewAspect]"}
    [:div
     [:h2 {:property "skos:prefLabel" :style "display: inline"} (or prefLabel id)]]
@@ -51,8 +47,6 @@
    [:main
     [:hgroup [:h1 "the calgary coffee vocabulary"]
      [:p "ways of talking about coffee"]]
-    [:p "TODO explain NPS"]
-    [:p "TODO talk about your experience playing that one horror game and how you relate to the question of palates. "]
     (top-feature
      {:id "Coffee" :editorialNote (md "coffee/editorialNote")}
      (skos "scopeNote" (md "coffee/scopeNote"))

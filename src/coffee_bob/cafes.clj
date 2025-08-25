@@ -10,7 +10,13 @@
 (defn class-link [s] (format "%s%s" bob-prefix (capitalize s)))
 (defn full-bobber [s] (format "https://coffee-bob.dasein-online.ca%s" s))
 
-(defn generic-md [s] (->> s (format "./resources/static/%s.md") m/file->hiccup list))
+(defn generic-md [path s]
+  (->> s
+       (format "%s/%s" path)
+       (format "./resources/static/%s.md")
+       m/file->hiccup list))
+
+        ;; md #(->> % (format "%s/%s" id) generic-md)
 
 (def bottom-links
   [[:a {:href "/about"} "about"]
@@ -18,7 +24,6 @@
    [:a {:href "/"} "home"]
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
    [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]])
-
 
 (defn open-graph [{:keys [title description]}]
   (let [cofflake (full-bobber "/public/cofflake-render-2025-08-18.svg")
@@ -33,9 +38,7 @@
      (prop "og:image" cofflake-png)
      (prop "og:site_name" "The Calgary Coffee Bob")
      (prop "og:title" title)
-     (prop "og:audio" "https://thirdworlds.net/files/Death Grips EP/Death Grips - Death Grips (Next Grips).mp3")
-     )))
-
+     (prop "og:audio" "https://thirdworlds.net/files/Death Grips EP/Death Grips - Death Grips (Next Grips).mp3"))))
 
 (defn layout [{:keys [prefix headstuff id version]} & children]
   [:html {:lang "en-CA" :id id :prefix prefix}
@@ -166,7 +169,7 @@
 
 (def semantics
   (let [id "semantics"
-        md #(->> % (format "%s/%s" id) generic-md)]
+        md (partial generic-md id)]
     [{:id id :name "Semantics Cafe" :color "#5ba8f7"
       :summary "too early to say, but i'm interested in what's to come"}
      (aspect
@@ -302,7 +305,7 @@
 
 (def particle
   (let [id "particle"
-        md #(->> % (format "%s/%s" id) generic-md)]
+        md (partial generic-md id)]
     [{:id id :name "Particle Coffee" :color "#72b622" :summary "clean washed coffees and fantastic seasonals"}
      (reviewBody (md "reviewBody"))
      (cutout (location 51.03766708785928 -114.08121351161644)

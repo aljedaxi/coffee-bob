@@ -4,7 +4,7 @@
    [clojure.data.json :as json]
    [markdown-to-hiccup.core :as m]
    [hiccup2.core :refer [html]]
-   [coffee-bob.cafes :refer [layout cafes bobbery class-link cafe open-graph]]
+   [coffee-bob.cafes :refer [layout cafes class-link cafe open-graph generic-md]]
    [coffee-bob.util :refer [depn]]
    [coffee-bob.taxa :refer [taxonomy]]
    [coffee-bob.html-utils :as h]))
@@ -16,18 +16,14 @@
 
 (defn html5 [input] (-> input html str))
 
-(defn skos [property & children]
-  [:p {:property (format "skos:%s" property)} children])
-
-(defn nar [props & children]
-  (let [f (fn [%]
-            [:p "children: "
-             [:a {:rel "skos:narrower" :href (bobbery (name %))}
-              %]])]
-    (cond
-      (keyword? children) (f children)
-      (sequential? children) (map f children)
-      :else nil)))
+(defn nps [title]
+  (let [md (partial generic-md "taxonomy/NPS")
+        sd (fn [s] [:section {:property (format "skos:%s" s)} (md s)])]
+    [:main
+     [:h1 title]
+     (sd "definition")
+     (sd "example")
+     (sd "historyNote")]))
 
 (defn cafe-list-item [[props & rest]]
   (let [{:keys [id name summary color]} props
@@ -55,15 +51,11 @@
       [:p {:property "abstract"} summary]]
      [:ul.ratings rating-lis]]))
 
-(defn pages []
-  (let [cafe-map-list (mapcat
-                       #(vector (-> % cafe-id cafe-url)
-                                (->> % (apply cafe) html5))
-                       cafes)
-        cafe-map (apply hash-map cafe-map-list)
-        head-group [:hgroup
-                    [:h1 "the calgary " [:a {:href (class-link "Coffee")} "coffee bob"]]
-                    [:p "a celebration of any aspect of anywhere that serves coffee"]]
+(defn index [{:keys [version]}]
+  (let [head-group
+        [:hgroup
+         [:h1 "the calgary " [:a {:href (class-link "Coffee")} "coffee bob"]]
+         [:p "a celebration of any aspect of anywhere that serves coffee"]]
         speculationRules {:prefetch [{:where {:href_matches "/*"}}]
                           :eagerness "moderate"}
         headstuff (list
@@ -74,14 +66,22 @@
                    [:script {:type "speculationrules"}
                     (json/write-str speculationRules)]
                    [:script {:type "module" :async true :src "/public/spider.js"}])]
+    (html5
+     (layout
+      {:headstuff headstuff
+       :version version}
+      [:main head-group [:spider-graph {:aspects "rdfa"}]
+       [:nav [:ul (map cafe-list-item cafes)]]]))))
+
+(defn pages []
+  (let [cafe-map (apply
+                  hash-map
+                  (mapcat
+                   #(vector (-> % cafe-id cafe-url)
+                            (->> % (apply cafe) html5))
+                   cafes))]
     (merge
-     {"/" (fn [{:keys [version]}]
-            (html5
-             (layout
-              {:headstuff headstuff
-               :version version}
-              [:main head-group [:spider-graph {:aspects "rdfa"}]
-               [:nav [:ul (map cafe-list-item cafes)]]])))
+     {"/" index
       "/about/" (fn [{:keys [version]}]
                   (html5
                    (layout
@@ -94,5 +94,10 @@
                      {:headstuff (list [:title "about the bob"])}
                      [:main
                       (m/file->hiccup "./resources/static/about-me.md")]))
-      "/taxonomy/" (html5 taxonomy)}
+      "/taxonomy/" (html5 taxonomy)
+      "/nps/" (let [title "about the rating system"]
+                (html5
+                (layout
+                 {:headstuff (list [:title title])}
+                 (nps title))))}
      cafe-map)))
