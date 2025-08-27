@@ -121,11 +121,18 @@
 (defn short-drink [nps sum & children]
   (reviewRating :h3 nps "short drinks" "ShortDrink" (aspect-body sum children)))
 
+; TODO replace the number 9 with the number of references XDDDDDDDDDDDDDDDDDDDDD
+(defn color [n]
+   (->> n (* (/ 360 9)) Math/floor int (format "oklch(55%% 75%% %ddeg)")))
+
+(def aubade [:a {:href "https://www.vancouvercoffeesnob.com/chinatown/aubade-coffee-2/"} "aubade"])
+(def glitch [:a {:href "https://tokyocoffee.org/2016/04/15/glitch-coffee-roasters/"} "glitch"])
+
 (def european-bakery
   [{:id "european-bakery"
     :href "https://eurobakerydeli.com/"
     :name "European Bakery"
-    :color "#e83326"
+    :color (color 0)
     :summary "a bakery that serves surprisingly good turkish coffee"}
    (reviewBody
     [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
@@ -146,7 +153,7 @@
 
 (def velet
   [{:id "velet"
-    :color "#ff005d"
+    :color (color 1)
     :name "Velet Bike-Ski Cafe"
     :summary "coffee, turkish baked goods, and bike/ski repairs"}
    (reviewBody
@@ -170,7 +177,7 @@
 (def semantics
   (let [id "semantics"
         md (partial generic-md id)]
-    [{:id id :name "Semantics Cafe" :color "#5ba8f7"
+    [{:id id :name "Semantics Cafe" :color (color 2)
       :summary "too early to say, but i'm interested in what's to come"}
      (aspect
       "coffee" 2 "solid! on par with the alfornos of the world"
@@ -183,11 +190,9 @@
       (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door")
       (sub-aspect "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."))]))
 
-(def aubade [:a {:href "https://www.vancouvercoffeesnob.com/chinatown/aubade-coffee-2/"} "aubade"])
-(def glitch [:a {:href "https://tokyocoffee.org/2016/04/15/glitch-coffee-roasters/"} "glitch"])
-
 (def monogram
-  [{:id "monogram" :name "Monogram" :color "#997600" :summary "what was the crown jewel of the calgary scene" :recc "short-drinks"}
+  [{:id "monogram" :name "Monogram" :color (color 3)
+    :summary "what was the crown jewel of the calgary scene" :recc "short-drinks"}
    (reviewBody
     [:p "i don't have—a lot of—insider knowledge. but i pay close attention to some things when i go to cafes, especially when i go to the same cafe almost every day. Monogram was that for me. even " aubade " ran Monogram as their espresso."]
     [:p "but things have been shifting. many things that i need to write a general \"scene think piece\" on that don't fit in this article, but also smaller things. the cortados went from being routinely excellent, to sometimes excellent, to always good. staff churn has been increasing. the seasonal drinks have all kinda sucked recently (including the hot chocolate fest hot chocolates)."]
@@ -200,7 +205,7 @@
            (sub-aspect "variety" 3 "they run the standard gamut of coffee drinks, with little seasonal additions"))])
 
 (def t2722
-  [{:id "t2722" :name "T2722" :color "#1077f3"
+  [{:id "t2722" :name "T2722" :color (color 4)
     :summary "something that requires an entirely new language"
     :reqq "flight"}
    (reviewBody
@@ -249,7 +254,7 @@
 (def mobSquad
   [{:id "mob-squad"
     :name "MobSquad Cafe"
-    :color "#9b54f3"
+    :color (color 5)
     :summary "great views… beautiful views…"}
    (reviewBody
     [:p "absolutely the best views in the city. if you can sneak in with a thermos of coffee from elsewhere, you've got the best of both worlds. inside, it feels like the decor was decided by an up and coming oil-sands failson with lots of capital and little taste."]
@@ -273,7 +278,8 @@
            (sub-aspect "seating" 3 nil))])
 
 (def q-lab
-  [{:id "q-lab" :name "Q Lab" :color "#c85b00" :summary "a great place to try all kinds of stuff"}
+  [{:id "q-lab" :name "Q Lab" :color (color 6)
+    :summary "a great place to try all kinds of stuff"}
    (reviewBody
     [:p "i've got a feeling that i didn't get the full Q Lab experience. sure, i got the flight, and i was walked through the options, and i chose cool options and spoke with the barista. somewhere along the line, i got the feeling i missed something essential. when most coffee houses put the word \"coffee\" on the menu, they mean only the \"coffee liqueur\", the liquid byproduct of the coffee brewing process. when Q Labs uses the word coffee, they mean liquid, roasted beans, green coffee, &c."]
     [:p "There's something very special here that's easily missed."])
@@ -290,7 +296,8 @@
    (aspect "staff" 3 "super chill cat")])
 
 (def analog-bankers-hall
-  [{:id "analog-bankers-hall" :name "Analog — Banker's Hall" :color "#008c5c" :summary "Really weirdly beautiful"}
+  [{:id "analog-bankers-hall" :name "Analog — Banker's Hall"
+    :color (color 7) :summary "Really weirdly beautiful"}
    (reviewBody
     [:p "a plus 15 is a glass box, 15 meters above the ground. you pass through that glass box into a tall, slim glass box. You pass countless, uniform glass boxes, housing countless, multiform businesses. tinted windows chill light; it spills out onto marble."]
     [:p "marble is the odd accent in dark wood. green snakes down the rafters, and faded ruby tiling holds up the espresso machine. dark wood laminates spills out from the machine, bearing low leather seating and wide wooden tables. the lights are round and warm."]
@@ -306,7 +313,8 @@
 (def particle
   (let [id "particle"
         md (partial generic-md id)]
-    [{:id id :name "Particle Coffee" :color "#72b622" :summary "clean washed coffees and fantastic seasonals"}
+    [{:id id :name "Particle Coffee"
+      :color (color 8) :summary "clean washed coffees and fantastic seasonals"}
      (reviewBody (md "reviewBody"))
      (cutout (location 51.03766708785928 -114.08121351161644)
              (insta "particlecoffee"))
@@ -321,4 +329,4 @@
      (aspect "staff" 3 "Alex is really good at his job")
      (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")]))
 
-(def cafes [european-bakery velet monogram t2722 mobSquad q-lab analog-bankers-hall semantics particle])
+(def cafes [european-bakery velet semantics monogram t2722 mobSquad q-lab analog-bankers-hall particle])
