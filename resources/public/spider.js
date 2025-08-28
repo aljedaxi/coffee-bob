@@ -87,7 +87,7 @@ class SpiderGraph extends HTMLElement {
 				.attr('stroke', ([{color}]) => color)
 				.attr('fill', ([{color}]) => color)
 				.attr('stroke-opacity', 1)
-				.attr('fill-opacity', 0.2))
+				.attr('fill-opacity', 0.1))
 
 		svg.selectAll('circle')
 			.data(ticks)
