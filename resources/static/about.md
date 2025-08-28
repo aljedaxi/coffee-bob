@@ -20,3 +20,5 @@ this site has two primary goals:
 i make no claims to objectivity. this is [me](../about-me), my experiences, and my biases, something closer to gonzo journalism. i'm friends with more than a few baristas: i know the depths of their passion, the tales of their struggle. i can't pretend that that doesn't change anything.
 
 that being said, hosting for this site is currently free, so there are no costs to recoup. i will never run ads, and never accept money for anything. i will, however, accept review copies (free drinks), especially if they come from cute boys UωU.
+
+as with all establishment reviews, this is the sum of my experiences there, which range from me having gone there maybe 2 times, to going once a week for a year. i'll try to let you know what's what, but keep an eye out for updates to articles.
