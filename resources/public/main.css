@@ -1,5 +1,61 @@
 @import url("https://unpkg.com/normalize.css@8.0.1/normalize.css");
-@import url("https://unpkg.com/concrete.css@2.1.1/concrete.css");
+
+:root {
+  --bg: #111;
+  --fg: #eee;
+  --ratio: 1.61803398875;
+  --s0: 1rem;
+  --s1: calc(1rem * pow(var(--ratio), 1));
+  --s2: calc(1rem * pow(var(--ratio), 2));
+  --s3: calc(1rem * pow(var(--ratio), 3));
+  --s4: calc(1rem * pow(var(--ratio), 4));
+  font-size: calc(.333vw + 1rem);
+}
+
+hgroup p {
+  font-size: var(--s1);
+}
+
+body {
+  display: grid;
+  justify-items: center;
+  color: var(--fg);
+  background-color: var(--bg);
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  color: var(--fg);
+  background: transparent;
+  border: .1rem solid var(--fg);
+  cursor: pointer;
+}
+
+p {
+  margin-block: var(--s1);
+}
+
+main {
+  max-width: 35rem;
+  padding-block: var(--s1);
+}
+
+footer {
+  padding-block-end: var(--s1);
+}
+
+h1 {
+  font-size: var(--s2);
+  margin: 0;
+}
+
+h2 {
+  font-size: var(--s1);
+}
 
 * {
   font-family:
@@ -7,6 +63,6 @@
   font-weight: normal;
 }
 
-h1 a {
-  color: inherit;
+h1, a {
+  color: var(--fg);
 }
