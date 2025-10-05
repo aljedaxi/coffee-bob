@@ -10,6 +10,7 @@
    [coffee-bob.html-utils :as h]))
 
 (depn cafe-id -> first (get :id))
+(depn dateCreated -> first :dateCreated)
 (depn cafe-url ->> (format "/coffee-house/%s/"))
 (depn typeof some-> (nth 1) (get :typeof))
 (depn property some-> (nth 1) (get :property))
@@ -43,7 +44,10 @@
                               :href (format "/taxonomy%s" resource)} id]
                          [:span {:property "ratingValue"} rating-val]]))
                     ratings)]
-    [:details {:typeof "CriticReview"}
+    [:details {:id id
+               :resource (format "#%s" id)
+               :property "review"
+               :typeof "CriticReview"}
      [:summary
       [:h2 {:style (format "display: inline; color: %s" color)
             :property "itemReviewed" :typeof "CafeOrCoffeeShop"}
@@ -71,7 +75,7 @@
       {:headstuff headstuff
        :version version}
       [:main head-group [:spider-graph {:aspects "rdfa"}]
-       [:nav [:ul (map cafe-list-item cafes)]]]))))
+       [:nav [:ul (map cafe-list-item (reverse (sort-by dateCreated cafes)))]]]))))
 
 (defn pages []
   (let [cafe-map (apply
