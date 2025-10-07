@@ -1,0 +1,1 @@
+i'm reticent to score this. the eye that sees _[the barista](https://philosophynow.org/issues/61/Sartre_and_the_Waiter)_ and _coffee_ as [standing reserve](https://www.english.hawaii.edu/criticalink/heidegger/guide7.html) probably doesn't get specialty coffee.
