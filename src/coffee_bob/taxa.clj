@@ -8,20 +8,13 @@
 (defn skos [property & children]
   [:p {:property (format "skos:%s" property)} children])
 
+(defn narrow-link [%] [:a {:rel "skos:narrower" :href (bobbery %)} %])
 (defn narrower [& children]
-  [:p.children "children:"
-   (map (fn [%] [:a {:rel "skos:narrower" :href (bobbery %)} %])
-        children)])
+  (list "children:"
+        (map narrow-link children)))
 
 (defn eg [& children]
   [:p "eg. " [:span {:property "skos:example"} children]])
-
-(defn nar [& children]
-  (cond
-    (nil? children) nil
-    (keyword? children) (apply narrower [children])
-    (sequential? children) (apply narrower children)
-    :else nil))
 
 (defn top-feature
   [{:keys
@@ -36,6 +29,48 @@
    (if scopeNote (skos "scopeNote" scopeNote) nil)
    children])
 
+(defn child
+  [{:keys
+    [prefLabel definition editorialNote scopeNote example id]}
+   & children]
+  [:section {:id id :about (format "[bob:%s]" id) :typeof "[schema:reviewAspect]"}
+   [:div
+    [:h3 {:property "skos:prefLabel" :style "display: inline"} (or prefLabel id)]]
+   (skos "definition" definition)
+   (if editorialNote (skos "editorialNote" editorialNote) nil)
+   (if example (eg example) nil)
+   (if scopeNote (skos "scopeNote" scopeNote) nil)
+   children])
+
+(def coffee
+  (let [children (list
+                  (top-feature
+                   {:id "Turkish"
+                    :definition "alternatively known as arabic coffee. spread throughout the middle east by the ottoman empire, it's served with the grounds in the cup, like cupping coffee. for historical reasons, these days, it tends to be served with spices."})
+                  (top-feature
+                   {:id "Espresso"
+                    :definition "the ontic ground of all short drinks, long blacks &c."})
+                  (top-feature
+                   {:id "ShortDrinks"
+                    :prefLabel "short drinks"
+                    :example "your cortados, macchiatos, cappuccinos, &c."
+                    :editorialNote "with the exception of milk texture, i tend to think of these as all essentially the same, and choose whatever works best with the espresso."
+                    :definition "a double of espresso with less milk than a latte"})
+                  (top-feature
+                   {:id "LongBlacks"
+                    :prefLabel "long blacks"
+                    :example "americanos, long blacks, short blacks"
+                    :definition "hot watered down espresso"})
+                  (top-feature
+                   {:id "Flights" :definition "sometimes you want to try a lot of things...."}))]
+    (top-feature
+     {:id "Coffee" :editorialNote (md "coffee/editorialNote")}
+     (skos "scopeNote" (md "coffee/scopeNote"))
+     [:details
+      [:summary
+       (narrower "Turkish" "Espresso" "ShortDrinks" "LongBlacks" "Flights" "PourOvers")]
+      children])))
+
 (def taxonomy
   (layout
    {:headstuff (list
@@ -47,29 +82,7 @@
    [:main
     [:hgroup [:h1 "the calgary coffee vocabulary"]
      [:p "ways of talking about coffee"]]
-    (top-feature
-     {:id "Coffee" :editorialNote (md "coffee/editorialNote")}
-     (skos "scopeNote" (md "coffee/scopeNote"))
-     (narrower "Turkish" "Espresso" "ShortDrinks" "LongBlacks" "Flights" "PourOvers"))
-    (top-feature
-     {:id "Turkish"
-      :definition "alternatively known as arabic coffee. spread throughout the middle east by the ottoman empire, it's served with the grounds in the cup, like cupping coffee. for historical reasons, these days, it tends to be served with spices."})
-    (top-feature
-     {:id "Espresso"
-      :definition "the ontic ground of all short drinks, long blacks &c."})
-    (top-feature
-     {:id "ShortDrinks"
-      :prefLabel "short drinks"
-      :example "your cortados, macchiatos, cappuccinos, &c."
-      :editorialNote "with the exception of milk texture, i tend to think of these as all essentially the same, and choose whatever works best with the espresso."
-      :definition "a double of espresso with less milk than a latte"})
-    (top-feature
-     {:id "LongBlacks"
-      :prefLabel "long blacks"
-      :example "americanos, long blacks, short blacks"
-      :definition "hot watered down espresso"})
-    (top-feature
-     {:id "Flights" :definition "sometimes you want to try a lot of things...."})
+    coffee
     (top-feature
      {:id "PourOvers" :prefLabel "pour overs &c." :definition "if you could serve it at brewer's cup, it's in"})
     (top-feature
@@ -112,13 +125,12 @@
      (narrower "HotChocolate" "MiscDrinks"))
     (top-feature
      {:id "Tea" :definition "a drink produced by immersion brewing the leaves of camellia sinensis, or whatever else you want these days."
-      :scopeNote "because calgary isn't much of a tea city—i can name two decent tea shops off the top of my head—this includes matcha lattes, houjichas, &amp;c."})
+      :scopeNote "because calgary isn't much of a tea city—i can name two decent tea shops off the top of my head—this includes matcha lattes, houjichas, &c."})
     (top-feature
      {:id "HotChocolate" :prefLabel "hot chocolate" :definition "when the chocolate hot tho?"})
     (top-feature
      {:id "MiscDrinks" :prefLabel "misc drinks" :definition "usually stuff that's specific to this place"})
-    ;; (map
-    ;;  (fn [[k {:as all}]]
-    ;;    (top-feature (merge all {:id k})))
-    ;;  top-features)
-    ]))
+    (top-feature
+     {:id "Staff"
+      :definition "the human factor"
+      :editorialNote (md "Staff/editorialNote")})]))

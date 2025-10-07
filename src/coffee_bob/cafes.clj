@@ -44,7 +44,7 @@
      (prop "og:title" title)
      (prop "og:audio" "https://thirdworlds.net/files/Death Grips EP/Death Grips - Death Grips (Next Grips).mp3"))))
 
-(defn layout [{:keys [prefix headstuff id version]} & children]
+(defn layout [{:keys [prefix headstuff id version bottomstuff]} & children]
   [:html {:lang "en-CA" :id id :prefix prefix}
    [:head
     headstuff
@@ -56,7 +56,11 @@
    [:body {:vocab "https://schema.org/" :typeof "WebPage"}
     children
     [:footer
-     (interpose " ❧ " (if version (conj bottom-links version) bottom-links))]]])
+     (interpose
+      " ❧ "
+      (apply conj
+             (if version (conj bottom-links version) bottom-links)
+             (or bottomstuff [])))]]])
 
 (defn coord [x y] (format "https://www.openstreetmap.org/#map=20/%f/%f" x y))
 (defn location [x y] [:a {:href (coord x y)} "location"])

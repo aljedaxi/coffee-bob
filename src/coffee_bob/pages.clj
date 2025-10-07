@@ -101,7 +101,7 @@
       "/taxonomy/" (html5 taxonomy)
       "/nps/" (let [title "about the rating system"]
                 (html5
-                (layout
-                 {:headstuff (list [:title title])}
-                 (nps title))))}
+                 (layout
+                  {:headstuff (list [:title title])}
+                  (nps title))))}
      cafe-map)))
