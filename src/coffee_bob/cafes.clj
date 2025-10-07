@@ -10,20 +10,24 @@
 (defn class-link [s] (format "%s%s" bob-prefix (capitalize s)))
 (defn full-bobber [s] (format "https://coffee-bob.dasein-online.ca%s" s))
 
+(defn generic-txt [path s]
+  (->> s
+       (format "%s/%s" path)
+       (format "./resources/static/%s.md")
+       slurp))
+
 (defn generic-md [path s]
   (->> s
        (format "%s/%s" path)
        (format "./resources/static/%s.md")
        m/file->hiccup list))
 
-        ;; md #(->> % (format "%s/%s" id) generic-md)
-
 (def bottom-links
   [[:a {:href "/about"} "about"]
    [:a {:href "/about-me"} "about me"]
    [:a {:href "/"} "home"]
    [:a {:href "https://wiki.p2pfoundation.net/Peer_Production_License"} "PPL"]
-   [:button {:type "button" :style "margin: 0" :onclick "void dispenseMittens()"} "coffee"]])
+   [:button {:type "button" :onclick "void dispenseMittens()"} "coffee"]])
 
 (defn open-graph [{:keys [title description]}]
   (let [cofflake (full-bobber "/public/cofflake-render-2025-08-18.svg")
@@ -61,9 +65,10 @@
 (defn cutout [& children]
   (list [:hr] [:div.cutout children] [:hr]))
 
-(defn cafe [{:keys [id name summary color href]} & children]
+(defn cafe [{:keys [id name summary color dateCreated]} & children]
   (layout
    {:id id
+    :bottomstuff (list (if dateCreated [:time {:datetime dateCreated :property "dateCreated"} dateCreated] nil))
     :headstuff
     (list
      (open-graph {:title (format "a review of %s" name)
@@ -123,75 +128,35 @@
 
 ; TODO replace the number 9 with the number of references XDDDDDDDDDDDDDDDDDDDDD
 (defn color [n]
-   (->> n (* (/ 360 9)) Math/floor int (format "oklch(55%% 75%% %ddeg)")))
+  (->> n (* (/ 360 10)) Math/floor int (format "oklch(55%% 75%% %ddeg)")))
 
 (def aubade [:a {:href "https://www.vancouvercoffeesnob.com/chinatown/aubade-coffee-2/"} "aubade"])
 (def glitch [:a {:href "https://tokyocoffee.org/2016/04/15/glitch-coffee-roasters/"} "glitch"])
 
-(def european-bakery
-  [{:id "european-bakery"
-    :href "https://eurobakerydeli.com/"
-    :name "European Bakery"
-    :color (color 0)
-    :summary "a bakery that serves surprisingly good turkish coffee"}
+(def q-lab
+  [{:id "q-lab" :name "Q Lab"
+    :color (color 5)
+    :dateCreated "2024-03-23"
+    :summary "a great place to try all kinds of stuff"}
    (reviewBody
-    [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
-    [:p "all in all, this is a hidden gem, and the reason i made this website."])
-   (cutout (location 51.03766612184806 -114.07219196898996))
-   (aspect "coffee" 2 "they only serve turkish coffee. it's good."
-           (sub-aspect "price" 3 nil)
-           (sub-aspect "turkish" 2 nil)
-           (sub-aspect "variety" 1 nil))
-   (aspect "price" 3 "monumental value."
-           (sub-aspect "baked-goods" 3 nil)
-           (sub-aspect "variety" 3 nil))
-   (aspect "food" 2 "all manner of (mostly eastern) european baked goods and imports"
-           [:p "the baked goods run the gamut from flat breads, northern european loaves, baguettes, and pretzels, to savory stuffed goods like "
-            [:a {:href "https://www.thespruceeats.com/traditional-yugoslavian-rolled-burek-borek-recipe-1805900"} "bureks"]
-            ". on the right side of the store are imports from all around Europe. everything is excellent and very reasonably priced."])
-   (aspect "vibes" 2 "it's a bakery with a little grocery store")])
-
-(def velet
-  [{:id "velet"
-    :color (color 1)
-    :name "Velet Bike-Ski Cafe"
-    :summary "coffee, turkish baked goods, and bike/ski repairs"}
-   (reviewBody
-    [:p "velet is actually cool, in that effervescent, classical american/french sense. something about the japanese hiphop, turkish menu items, the snowboarding videos constantly playing on the tv, the exposed pillars and brick walls, and the used skis everywhere, that pulls together into something that feels real and raw. weeds comes close, but weeds feels more middle aged, comfortably not cool anymore, focused now on being cozy. any object in here could speak for lifetimes."]
-    [:p "a while ago, i had the distinct pleasure of spending a few days in whistler. velet would fit perfectly into that scene; not just in decor or design philosophy, but the coffee is scary reminiscent of some of the best spros i had there."]
-    [:p "finally, i'd like to note that this is also a bike/ski tune up shop. i don't have either of those so i can't speak to the quality, but i get the feeling the owner knows what he's doing."])
-   (aspect
-    "coffee" 2 "solid! fairly standard menu with little turkish additions"
-    [:p "(please don't take turkish too seriously. the ottoman empire was very large and very influential.)"]
-    (sub-aspect "price" 2 nil)
-    (sub-aspect "turkish" 2 "one of the less spiced in the city. defined, subdued bitterness. lively, contained acidity. a bit roasty. generally, well balanced, easy drinking.")
-    (sub-aspect "variety" 3 "salep? who has salep these days? baller shit."))
-   (aspect "price" 2 "standard"
-           (sub-aspect "bakedGoods" 2 nil)
-           (sub-aspect "variety" 2 nil))
-   (aspect "food" 2 "turkish stuff" [:p "i haven't had a lot of it, but everything i've had is good. i usually don't buy baked goods, but i feel good when buying this."])
-   (aspect
-    "vibes" 3 "immaculate"
-    (sub-aspect "comfy" 3 "fireplace. most of the seats are cushy. most of the colours are warm; most of the materials are warm, worn, exposed, rough. the staff is friendly and inviting."))])
-
-(def semantics
-  (let [id "semantics"
-        md (partial generic-md id)]
-    [{:id id :name "Semantics Cafe" :color (color 2)
-      :summary "too early to say, but i'm interested in what's to come"}
-     (aspect
-      "coffee" 2 "solid! on par with the alfornos of the world"
-      [:p "pleasant almond notes. mild roastiness. mild acidity. very par, very middle of the road."]
-      (sub-aspect "espresso" 2 "nothing special")
-      (sub-aspect "short-drinks" 2 "smooth, inoffensive."))
-     (aspect
-      "vibes" 3 "this " [:em "must"] " be understood in the fullest, most diffuse sense."
-      (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
-      (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door")
-      (sub-aspect "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."))]))
+    [:p "i've got a feeling that i didn't get the full Q Lab experience. sure, i got the flight, and i was walked through the options, and i chose cool options and spoke with the barista. somewhere along the line, i got the feeling i missed something essential. when most coffee houses put the word \"coffee\" on the menu, they mean only the \"coffee liqueur\", the liquid byproduct of the coffee brewing process. when Q Labs uses the word coffee, they mean liquid, roasted beans, green coffee, &c."]
+    [:p "There's something very special here that's easily missed."])
+   (aspect "coffee" 2 "closer to cupping"
+           [:p "this is what's convinced me i need an internal ranking system among 2s. this is the strongest 2 on the site. the coffee is good. the coffee is great."]
+           [:p "it just isn't in the same league as Sought and Found, Paradigm Spark, T2722, &c., because the place is more about green than they are about brown. it's closer to cupping in the sense that this is a pure exploration of terroir and processing technique, to the exclusion of brewing technique."]
+           [:p "again, not bad. better than ever other two. it's just focused on something else."]
+           (sub-aspect "flights" 3 "a collaborative, exploratory experience"
+                       [:p "this is the crown jewel of the experience. you need to get the flight. you _need_ to get the flight. just get the flight."]))
+   (aspect "price" 2 [:a {:href "https://youtu.be/9xZb4AMi--c?si=p4SRydcNxVfDi1J1&t=59"} "no complaints"])
+   (aspect "vibes" 2 "spartan, technical, focused"
+           [:p "the first thing you're struck with on your way in is that you're not struck by any single thing. there's a lot going on, especially when you first enter. there's wall of windows—the torrent of cold light—leading to the wall of bean bags, leading to a wall of equipment, leading to an espresso machine??? a deeply mysterious espresso machine on a table, leading to the cash register."]
+           [:p "as it stands—which may end soon—the storefront oscillates between spartan and cluttered. it feels like a _lab_; a place where people work on and with coffee. it's neat. i wouldn't be surprised if this feeling was just part of the opening process, but i would be depressed."])
+   (aspect "staff" 3 "super chill cat")])
 
 (def monogram
-  [{:id "monogram" :name "Monogram" :color (color 3)
+  [{:id "monogram" :name "Monogram"
+    :color (color 4)
+    :dateCreated "2024-03-21"
     :summary "what was the crown jewel of the calgary scene" :recc "short-drinks"}
    (reviewBody
     [:p "i don't have—a lot of—insider knowledge. but i pay close attention to some things when i go to cafes, especially when i go to the same cafe almost every day. Monogram was that for me. even " aubade " ran Monogram as their espresso."]
@@ -205,7 +170,9 @@
            (sub-aspect "variety" 3 "they run the standard gamut of coffee drinks, with little seasonal additions"))])
 
 (def t2722
-  [{:id "t2722" :name "T2722" :color (color 4)
+  [{:id "t2722" :name "T2722"
+    :color (color 3)
+    :dateCreated "2024-02-18"
     :summary "something that requires an entirely new language"
     :reqq "flight"}
    (reviewBody
@@ -251,10 +218,27 @@
                   (sub-aspect "misc" 3 "")
                   (sub-aspect "variety" 3 ""))])
 
+(def analog-bankers-hall
+  [{:id "analog-bankers-hall" :name "Analog — Banker's Hall"
+    :dateCreated "2024"
+    :color (color 2) :summary "Really weirdly beautiful"}
+   (reviewBody
+    [:p "a plus 15 is a glass box, 15 meters above the ground. you pass through that glass box into a tall, slim glass box. You pass countless, uniform glass boxes, housing countless, multiform businesses. tinted windows chill light; it spills out onto marble."]
+    [:p "marble is the odd accent in dark wood. green snakes down the rafters, and faded ruby tiling holds up the espresso machine. dark wood laminates spills out from the machine, bearing low leather seating and wide wooden tables. the lights are round and warm."]
+    [:p "does this location have a distinct identity to—say—the Deville in the Google building? no. does it—as the kids say—beat the airspace allegations? certainly not. but the way it suddenly shatters the undifferentiated droll of the +15s is irresistible—every now and then."])
+   (aspect "coffee" 2 "par. slightly worse than the 17th location.")
+   (aspect "price" 2 "exactly what you'd expect")
+   (aspect "vibes" 2 "see above"
+           [:p "anywhere else, it'd be pretty boring. but the use of space, here, is stunning. it's warm and open and airy, and intimate and round."]
+           [:p "the layout is exceptionally praiseworthy. the pillars and planters partition the space into private places, while preserving the open, inviting atmosphere. it should be a case study."]
+           (sub-aspect "seating" 3 "bountiful"))
+   (aspect "staff" 2 "cool enough people")])
+
 (def mobSquad
   [{:id "mob-squad"
     :name "MobSquad Cafe"
-    :color (color 5)
+    :dateCreated "2024"
+    :color (color 1)
     :summary "great views… beautiful views…"}
    (reviewBody
     [:p "absolutely the best views in the city. if you can sneak in with a thermos of coffee from elsewhere, you've got the best of both worlds. inside, it feels like the decor was decided by an up and coming oil-sands failson with lots of capital and little taste."]
@@ -277,44 +261,61 @@
            (sub-aspect "view" 3 "")
            (sub-aspect "seating" 3 nil))])
 
-(def q-lab
-  [{:id "q-lab" :name "Q Lab" :color (color 6)
-    :summary "a great place to try all kinds of stuff"}
+(def european-bakery
+  [{:id "european-bakery"
+    :href "https://eurobakerydeli.com/"
+    :name "European Bakery"
+    :dateCreated "2023"
+    :color (color 0)
+    :summary "a bakery that serves surprisingly good turkish coffee"}
    (reviewBody
-    [:p "i've got a feeling that i didn't get the full Q Lab experience. sure, i got the flight, and i was walked through the options, and i chose cool options and spoke with the barista. somewhere along the line, i got the feeling i missed something essential. when most coffee houses put the word \"coffee\" on the menu, they mean only the \"coffee liqueur\", the liquid byproduct of the coffee brewing process. when Q Labs uses the word coffee, they mean liquid, roasted beans, green coffee, &c."]
-    [:p "There's something very special here that's easily missed."])
-   (aspect "coffee" 2 "closer to cupping"
-           [:p "this is what's convinced me i need an internal ranking system among 2s. this is the strongest 2 on the site. the coffee is good. the coffee is great."]
-           [:p "it just isn't in the same league as Sought and Found, Paradigm Spark, T2722, &c., because the place is more about green than they are about brown. it's closer to cupping in the sense that this is a pure exploration of terroir and processing technique, to the exclusion of brewing technique."]
-           [:p "again, not bad. better than ever other two. it's just focused on something else."]
-           (sub-aspect "flights" 3 "a collaborative, exploratory experience"
-                       [:p "this is the crown jewel of the experience. you need to get the flight. you _need_ to get the flight. just get the flight."]))
-   (aspect "price" 2 [:a {:href "https://youtu.be/9xZb4AMi--c?si=p4SRydcNxVfDi1J1&t=59"} "no complaints"])
-   (aspect "vibes" 2 "spartan, technical, focused"
-           [:p "the first thing you're struck with on your way in is that you're not struck by any single thing. there's a lot going on, especially when you first enter. there's wall of windows—the torrent of cold light—leading to the wall of bean bags, leading to a wall of equipment, leading to an espresso machine??? a deeply mysterious espresso machine on a table, leading to the cash register."]
-           [:p "as it stands—which may end soon—the storefront oscillates between spartan and cluttered. it feels like a _lab_; a place where people work on and with coffee. it's neat. i wouldn't be surprised if this feeling was just part of the opening process, but i would be depressed."])
-   (aspect "staff" 3 "super chill cat")])
+    [:p "the European bakery is, foremostly, a eastern European bakery. they advertise the Turkish coffee on a small sign above the baked goods in the corner of the cafe. it's absolutely one of the best in downtown, and only about 3 dollars."]
+    [:p "all in all, this is a hidden gem, and the reason i made this website."])
+   (cutout (location 51.03766612184806 -114.07219196898996))
+   (aspect "coffee" 2 "they only serve turkish coffee. it's good."
+           (sub-aspect "price" 3 nil)
+           (sub-aspect "turkish" 2 nil)
+           (sub-aspect "variety" 1 nil))
+   (aspect "price" 3 "monumental value."
+           (sub-aspect "baked-goods" 3 nil)
+           (sub-aspect "variety" 3 nil))
+   (aspect "food" 2 "all manner of (mostly eastern) european baked goods and imports"
+           [:p "the baked goods run the gamut from flat breads, northern european loaves, baguettes, and pretzels, to savory stuffed goods like "
+            [:a {:href "https://www.thespruceeats.com/traditional-yugoslavian-rolled-burek-borek-recipe-1805900"} "bureks"]
+            ". on the right side of the store are imports from all around Europe. everything is excellent and very reasonably priced."])
+   (aspect "vibes" 2 "it's a bakery with a little grocery store")])
 
-(def analog-bankers-hall
-  [{:id "analog-bankers-hall" :name "Analog — Banker's Hall"
-    :color (color 7) :summary "Really weirdly beautiful"}
+(def velet
+  [{:id "velet"
+    :color (color 6)
+    :name "Velet Bike-Ski Cafe"
+    :dateCreated "2024-12-09"
+    :summary "coffee, turkish baked goods, and bike/ski repairs"}
    (reviewBody
-    [:p "a plus 15 is a glass box, 15 meters above the ground. you pass through that glass box into a tall, slim glass box. You pass countless, uniform glass boxes, housing countless, multiform businesses. tinted windows chill light; it spills out onto marble."]
-    [:p "marble is the odd accent in dark wood. green snakes down the rafters, and faded ruby tiling holds up the espresso machine. dark wood laminates spills out from the machine, bearing low leather seating and wide wooden tables. the lights are round and warm."]
-    [:p "does this location have a distinct identity to—say—the Deville in the Google building? no. does it—as the kids say—beat the airspace allegations? certainly not. but the way it suddenly shatters the undifferentiated droll of the +15s is irresistible—every now and then."])
-   (aspect "coffee" 2 "par. slightly worse than the 17th location.")
-   (aspect "price" 2 "exactly what you'd expect")
-   (aspect "vibes" 2 "see above"
-           [:p "anywhere else, it'd be pretty boring. but the use of space, here, is stunning. it's warm and open and airy, and intimate and round."]
-           [:p "the layout is exceptionally praiseworthy. the pillars and planters partition the space into private places, while preserving the open, inviting atmosphere. it should be a case study."]
-           (sub-aspect "seating" 3 "bountiful"))
-   (aspect "staff" 2 "cool enough people")])
+    [:p "velet is actually cool, in that effervescent, classical american/french sense. something about the japanese hiphop, turkish menu items, the snowboarding videos constantly playing on the tv, the exposed pillars and brick walls, and the used skis everywhere, that pulls together into something that feels real and raw. weeds comes close, but weeds feels more middle aged, comfortably not cool anymore, focused now on being cozy. any object in here could speak for lifetimes."]
+    [:p "a while ago, i had the distinct pleasure of spending a few days in whistler. velet would fit perfectly into that scene; not just in decor or design philosophy, but the coffee is scary reminiscent of some of the best spros i had there."]
+    [:p "finally, i'd like to note that this is also a bike/ski tune up shop. i don't have either of those so i can't speak to the quality, but i get the feeling the owner knows what he's doing."])
+   (aspect
+    "coffee" 2 "solid! fairly standard menu with little turkish additions"
+    [:p "(please don't take turkish too seriously. the ottoman empire was very large and very influential.)"]
+    (sub-aspect "price" 2 nil)
+    (sub-aspect "turkish" 2 "one of the less spiced in the city. defined, subdued bitterness. lively, contained acidity. a bit roasty. generally, well balanced, easy drinking.")
+    (sub-aspect "variety" 3 "salep? who has salep these days? baller shit."))
+   (aspect "price" 2 "standard"
+           (sub-aspect "bakedGoods" 2 nil)
+           (sub-aspect "variety" 2 nil))
+   (aspect "food" 2 "turkish stuff" [:p "i haven't had a lot of it, but everything i've had is good. i usually don't buy baked goods, but i feel good when buying this."])
+   (aspect
+    "vibes" 3 "immaculate"
+    (sub-aspect "comfy" 3 "fireplace. most of the seats are cushy. most of the colours are warm; most of the materials are warm, worn, exposed, rough. the staff is friendly and inviting."))])
 
 (def particle
   (let [id "particle"
         md (partial generic-md id)]
     [{:id id :name "Particle Coffee"
-      :color (color 8) :summary "clean washed coffees and fantastic seasonals"}
+      :dateCreated "2025-08-30"
+      :color (color 7)
+      :summary "clean washed coffees and fantastic seasonals"}
      (reviewBody (md "reviewBody"))
      (cutout (location 51.03766708785928 -114.08121351161644)
              (insta "particlecoffee"))
@@ -324,9 +325,45 @@
              (short-drink 3 "my man makes a mean cortado"
                           [:p "you can't go to Particle without getting an oat milk one and one. if you're feeling saucy, consider the 1&amp;1&amp;1: a spro, a cortado, and a dirty or a shakerato."]))
      (other-bevvies 3 "some really neat stuff" (md "OtherBevvies"))
-     (aspect "vibes" 2 "tech worker" (md "vibes/index"))
+     (aspect "vibes" 2 "tech worker; airspace" (md "vibes/index"))
      (aspect "food" 2 "above average, but nothing groundbreaking" [:p "sourced from the lovely " [:a {:href "https://www.kanyoucake.com/"} "Kan U Cake"]])
      (aspect "staff" 3 "Alex is really good at his job")
      (aspect "price" 2 "very reasonable" "The pour overs are a bit more expensive than like, Phil and Seb, but when you factor in quality, you're getting exceptional value. espresso based drinks and seasonals are prefectly on par.")]))
 
-(def cafes [european-bakery velet semantics monogram t2722 mobSquad q-lab analog-bankers-hall particle])
+(def caffe-levant
+  (let [id "caffe-levant"
+        txt (partial generic-txt id)
+        md (partial generic-md id)]
+    [{:id id :name "Caffe Levant" :color (color 8)
+      :dateCreated (txt "dateCreated")
+      :summary "a great place to study"}
+     (reviewBody (md "reviewBody"))
+     (cutout (location 51.04794555220627 -114.07338856967263))
+     (aspect "coffee" 2 "bottom of the 2s"
+             (md "Coffee")
+             (sub-aspect "LongBlacks" 2 nil)
+             (sub-aspect "Price" 2 nil))
+     (aspect "vibes" 2 "it's own unique breed of non-unique")]))
+
+(def semantics
+  (let [id "semantics"
+        txt (partial generic-txt id)
+        md (partial generic-md id)]
+    [{:id id :name "Semantics Cafe"
+      :dateCreated (txt "dateCreated")
+      :color (color 9)
+      :summary "events & culture first"}
+     (aspect
+      "coffee" 2 "solid! on par with the alfornos of the world"
+      [:p "pleasant almond notes. mild roastiness. mild acidity. very par, very middle of the road."]
+      (sub-aspect "espresso" 2 "nothing special")
+      (sub-aspect "short-drinks" 2 "smooth, inoffensive."))
+     (aspect
+      "vibes" 3 "this " [:em "must"] " be understood in the fullest, most diffuse sense."
+      (sub-aspect "power" 2 "outlets run along the walls. you'll want to sit on the edges if you need to plug in")
+      (sub-aspect "seating" 3 "there's a lot. most of it is hard plastic, but there's a lovely little couch by the door")
+      (sub-aspect "space" 2 "lovely. feels a bit sparse and empty right now, but the bones are solid."))]))
+
+(def cafes [european-bakery
+            velet semantics monogram t2722 mobSquad
+            q-lab analog-bankers-hall particle caffe-levant])
