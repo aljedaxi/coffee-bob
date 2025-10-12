@@ -357,6 +357,8 @@
       :dateCreated (txt "dateCreated")
       :color (color 9)
       :summary "events & culture first"}
+     (reviewBody (md "reviewBody"))
+     (cutout (location 51.04300225619515, -114.06052182907571))
      (aspect
       "coffee" 2 "solid! on par with the alfornos of the world"
       [:p "pleasant almond notes. mild roastiness. mild acidity. very par, very middle of the road."]
