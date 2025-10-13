@@ -38,6 +38,11 @@ p {
 main {
   max-width: 35rem;
   padding-block: var(--s1);
+  display: grid;
+}
+
+spider-graph {
+    justify-self: center;
 }
 
 footer {
