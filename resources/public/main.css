@@ -4,16 +4,12 @@
   --bg: #111;
   --fg: #eee;
   --ratio: 1.61803398875;
-  --s0: 1rem;
+  --s0: 1.5rem;
   --s1: calc(1rem * pow(var(--ratio), 1));
   --s2: calc(1rem * pow(var(--ratio), 2));
   --s3: calc(1rem * pow(var(--ratio), 3));
   --s4: calc(1rem * pow(var(--ratio), 4));
-  font-size: calc(.333vw + 1rem);
-}
-
-hgroup p {
-  font-size: var(--s1);
+  font-size: calc(.333vw + 1.5rem);
 }
 
 body {
@@ -51,10 +47,6 @@ footer {
 h1 {
   font-size: var(--s2);
   margin: 0;
-}
-
-h2 {
-  font-size: var(--s1);
 }
 
 * {

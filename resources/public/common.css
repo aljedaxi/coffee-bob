@@ -11,8 +11,7 @@ section {
   justify-content: space-between;
   align-items: baseline;
   padding-block: 1rem;
-  & h2,
-  h3 {
+  & h2, h3 {
     margin: 0;
   }
 }
@@ -28,4 +27,7 @@ details[open] > summary {
 }
 details > summary {
   list-style-type: "❧ ";
+}
+summary::marker {
+    font-size: var(--s1);
 }
